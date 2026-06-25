@@ -1,0 +1,3087 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AkademHub — Маркетинговое исследование массовой коммуникации</title>
+<style>
+  :root {
+    --ink: #ffffff;
+    --paper: #f5f7ff;
+    --mid: #eef1fb;
+    --surface: #f0f3ff;
+    --accent: #2563eb;
+    --accent2: #7c3aed;
+    --accent3: #059669;
+    --accent4: #d97706;
+    --accent5: #dc2626;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --border: rgba(37,99,235,0.12);
+    --card-bg: #ffffff;
+    --card-hover: #f8faff;
+    --glow-blue: rgba(37,99,235,0.08);
+    --glow-purple: rgba(124,58,237,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #f5f7ff;
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND GRID */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 12px rgba(37,99,235,0.07);
+  }
+
+  .nav-logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* SLIDE WRAPPER */
+  .slide {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding: 120px 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid rgba(37,99,235,0.08);
+    max-width: 1400px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .slide.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SLIDE NUMBERING */
+  .slide-number {
+    position: absolute;
+    top: 100px;
+    right: 60px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* EYEBROW */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* HEADINGS */
+  h1 {
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-green {
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  p { color: var(--text-secondary); line-height: 1.75; margin-bottom: 12px; }
+
+  /* CARDS */
+  .card {
+    background: #ffffff;
+    border: 1px solid rgba(37,99,235,0.12);
+    border-radius: 16px;
+    padding: 28px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(37,99,235,0.05);
+  }
+
+  .card:hover {
+    background: #f8faff;
+    border-color: rgba(37,99,235,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(37,99,235,0.1);
+  }
+
+  .card-accent-blue::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .card-accent-green::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+  }
+
+  .card-accent-purple::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent5));
+  }
+
+  .card-accent-amber::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent4), var(--accent5));
+  }
+
+  /* GRID LAYOUTS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+
+  /* STAT BLOCKS */
+  .stat-value {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .tag-blue { background: rgba(37,99,235,0.1); color: #1d4ed8; }
+  .tag-green { background: rgba(5,150,105,0.1); color: #047857; }
+  .tag-purple { background: rgba(124,58,237,0.1); color: #6d28d9; }
+  .tag-amber { background: rgba(217,119,6,0.12); color: #b45309; }
+  .tag-red { background: rgba(220,38,38,0.1); color: #b91c1c; }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    margin: 20px 0;
+  }
+
+  /* LIST */
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .feature-list li::before {
+    content: '→';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* SWOT */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .swot-cell {
+    padding: 28px;
+    position: relative;
+  }
+
+  .swot-s { background: rgba(5,150,105,0.06); }
+  .swot-w { background: rgba(220,38,38,0.06); }
+  .swot-o { background: rgba(37,99,235,0.06); }
+  .swot-t { background: rgba(217,119,6,0.07); }
+
+  .swot-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .swot-s .swot-label { color: var(--accent3); }
+  .swot-w .swot-label { color: var(--accent5); }
+  .swot-o .swot-label { color: var(--accent); }
+  .swot-t .swot-label { color: var(--accent4); }
+
+  /* PROGRESS BARS */
+  .progress-bar {
+    height: 6px;
+    background: rgba(37,99,235,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+    width: 0;
+  }
+
+  .slide.visible .progress-fill {
+    width: var(--target-width);
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid #f5f7ff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+  }
+
+  .timeline-year {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .timeline-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .timeline-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* SECTION LABEL */
+  .section-intro {
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+
+  /* ICON BLOCK */
+  .icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+
+  .icon-blue { background: rgba(37,99,235,0.1); }
+  .icon-green { background: rgba(5,150,105,0.1); }
+  .icon-purple { background: rgba(124,58,237,0.1); }
+  .icon-amber { background: rgba(217,119,6,0.1); }
+  .icon-red { background: rgba(220,38,38,0.1); }
+
+  /* BIG QUOTE */
+  .big-quote {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.5;
+    border-left: 3px solid var(--accent);
+    padding-left: 28px;
+    margin: 32px 0;
+  }
+
+  /* HERO SECTION */
+  #slide-01 {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37,99,235,0.06) 0%, transparent 70%);
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* COMPETITOR MATRIX */
+  .comp-matrix td:first-child { color: var(--text-primary); font-weight: 600; }
+  .comp-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .dot-full { background: #059669; }
+  .dot-half { background: #d97706; }
+  .dot-empty { background: #cbd5e1; }
+
+  /* STAKEHOLDER MAP */
+  .stakeholder-map {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background: #f8faff;
+    border: 1px solid rgba(37,99,235,0.12);
+    border-radius: 20px;
+    position: relative;
+  }
+
+  .hub-center {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    padding: 20px 32px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(37,99,235,0.25);
+  }
+
+  .stakeholder-node {
+    padding: 10px 18px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 60px 40px;
+    border-top: 1px solid rgba(37,99,235,0.1);
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* PILL */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid rgba(37,99,235,0.15);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    box-shadow: 0 1px 4px rgba(37,99,235,0.06);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .slide { padding: 100px 24px 60px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    nav { padding: 0 20px; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .slide-number { right: 24px; }
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 32px; letter-spacing: -1px; }
+    h2 { font-size: 24px; }
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 2000;
+    transition: width 0.1s;
+  }
+
+  /* VPC canvas */
+  .vpc-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .vpc-right, .vpc-left {
+    padding: 28px;
+  }
+
+  .vpc-right {
+    background: rgba(37,99,235,0.04);
+    border-right: 1px solid rgba(37,99,235,0.1);
+  }
+
+  .vpc-left {
+    background: rgba(5,150,105,0.04);
+  }
+
+  .vpc-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .vpc-right .vpc-title { color: var(--accent); }
+  .vpc-left .vpc-title { color: var(--accent3); }
+
+  /* CJM */
+  .cjm-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .cjm-cell {
+    background: #ffffff;
+    padding: 14px 16px;
+    font-size: 12px;
+    vertical-align: top;
+  }
+
+  .cjm-header {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .cjm-stage-label {
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .cjm-stage-val { color: var(--accent); font-weight: 700; font-size: 11px; }
+
+  @media (max-width: 900px) {
+    .cjm-row { grid-template-columns: 1fr 1fr; }
+    .vpc-wrap { grid-template-columns: 1fr; }
+  }
+
+  /* RISK MATRIX */
+  .risk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(37,99,235,0.1);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(37,99,235,0.04);
+  }
+
+  .risk-badge {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .risk-high { background: rgba(220,38,38,0.1); color: #b91c1c; }
+  .risk-med { background: rgba(217,119,6,0.12); color: #b45309; }
+  .risk-low { background: rgba(5,150,105,0.1); color: #047857; }
+
+  /* GLOW ORB */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO BADGE */
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  /* CHANNEL CARD */
+  .channel-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border: 1px solid rgba(37,99,235,0.1);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(37,99,235,0.04);
+  }
+
+  .channel-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* FORCE HORIZONTAL */
+  .flex-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* MONETIZATION */
+  .mono-tier {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .mono-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(37,99,235,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mono-fill {
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05));
+    border: 1px solid rgba(37,99,235,0.15);
+    border-radius: 16px;
+    padding: 28px 32px;
+  }
+  /* SLIDE BACKGROUNDS - light theme separation */
+  .slide:nth-child(even) { background: #ffffff; }
+  .slide:nth-child(odd)  { background: #f5f7ff; }
+  #slide-01 {
+    background: linear-gradient(160deg,#eef4ff 0%,#f5f7ff 100%) !important;
+  }
+  /* SWOT GRID light border */
+  .swot-grid { border-color: rgba(37,99,235,0.1); }
+  /* TABLE rows light stripe */
+  tr:nth-child(even) td { background: rgba(37,99,235,0.02); }
+  /* VPC wrap border */
+  .vpc-wrap { border-color: rgba(37,99,235,0.1); }
+</style>
+</head>
+<body>
+
+<div class="scroll-indicator" id="scrollBar"></div>
+
+<nav>
+  <div class="nav-logo">AkademHub</div>
+  <div class="nav-meta">Маркетинговые исследования массовой коммуникации · 2026</div>
+</nav>
+
+<!-- ===== SLIDE 01 — TITLE ===== -->
+<div class="slide" id="slide-01">
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(37,99,235,0.05);top:-100px;right:-100px;"></div>
+  <div class="glow-orb" style="width:300px;height:300px;background:rgba(124,58,237,0.04);bottom:0;left:100px;"></div>
+  <div class="slide-number">01 / 40</div>
+
+  <div class="eyebrow">Маркетинговые исследования массовой коммуникации</div>
+  <h1><span class="gradient-text">AkademHub</span><br>Цифровая платформа<br>академической коммуникации</h1>
+
+  <div class="divider"></div>
+
+  <p style="max-width:640px;font-size:16px;color:var(--text-secondary);">
+    Комплексное маркетинговое исследование коммуникационной инфраструктуры академической среды Узбекистана — инструменты анализа, стратегия, перспективы.
+  </p>
+
+  <div class="hero-badges">
+    <span class="pill">🎓 Академическая экосистема</span>
+    <span class="pill">📡 Массовые коммуникации</span>
+    <span class="pill">🚀 Стартап-анализ</span>
+    <span class="pill">🇺🇿 Узбекистан</span>
+    <span class="pill">📅 2026</span>
+  </div>
+
+  <div class="grid-4" style="margin-top:56px;">
+    <div class="card card-accent-blue">
+      <div class="stat-value gradient-text">40</div>
+      <div class="stat-label">аналитических блоков</div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="stat-value gradient-text-green">7+</div>
+      <div class="stat-label">сегментов аудитории</div>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="stat-value" style="background:linear-gradient(135deg,var(--accent2),var(--accent5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">5</div>
+      <div class="stat-label">лет горизонт планирования</div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="stat-value" style="background:linear-gradient(135deg,var(--accent4),var(--accent5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">∞</div>
+      <div class="stat-label">потенциал охвата</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 02 — АКТУАЛЬНОСТЬ ===== -->
+<div class="slide" id="slide-02">
+  <div class="slide-number">02 / 40</div>
+  <div class="eyebrow">Актуальность темы</div>
+  <h2>Почему это важно <span class="gradient-text">сейчас</span></h2>
+
+  <div class="section-intro">
+    <p>Современная академическая среда переживает структурный кризис коммуникации: наука производит знания, но не умеет донести их до общества, бизнеса и власти. Этот разрыв становится всё более дорогостоящим.</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="card card-accent-red">
+      <div class="icon-wrap icon-red">🔬</div>
+      <h3>Коммуникационный разрыв</h3>
+      <p style="font-size:13px;">Академические результаты не достигают бизнеса. По данным ЮНЕСКО, более 70% научных исследований в развивающихся странах не получают практического применения.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">📊</div>
+      <h3>Формализация науки</h3>
+      <p style="font-size:13px;">Конференции всё чаще проводятся ради отчётности, а не ради научного диалога. Отсутствует инфраструктура для реального взаимодействия участников.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🌐</div>
+      <h3>Цифровая трансформация</h3>
+      <p style="font-size:13px;">Глобальный рынок EdTech превысил $400 млрд. Академические платформы — наиболее быстро растущий сегмент с CAGR более 18%.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:32px;">
+    <div class="big-quote">
+      «Отсутствие коммуникационной инфраструктуры между наукой, бизнесом и обществом — одна из ключевых причин низкой инновационной активности в регионе»
+    </div>
+    <p style="font-size:13px;margin:0;">— фиксируемая проблема в рамках исследования академической среды Центральной Азии</p>
+  </div>
+
+  <div class="grid-2" style="margin-top:28px;">
+    <div class="card">
+      <h3 style="color:var(--accent3);font-size:14px;">📈 Рыночный контекст</h3>
+      <ul class="feature-list" style="margin-top:8px;">
+        <li>Узбекистан — 36+ млн человек, молодейшая демография региона</li>
+        <li>Более 170 высших учебных заведений в стране</li>
+        <li>Государственная стратегия «Узбекистан — 2030» включает цифровизацию образования</li>
+        <li>Рост числа научных публикаций: +40% за 2020–2025</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--accent);font-size:14px;">🎯 Почему AkademHub?</h3>
+      <ul class="feature-list" style="margin-top:8px;">
+        <li>Первая платформа подобного масштаба в регионе</li>
+        <li>Закрывает системный коммуникационный пробел</li>
+        <li>Готовность рынка: академическое сообщество ищет digital-инструменты</li>
+        <li>Поддерживается государственным курсом на инновации</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 03 — ОПИСАНИЕ СТАРТАПА ===== -->
+<div class="slide" id="slide-03">
+  <div class="slide-number">03 / 40</div>
+  <div class="eyebrow">Описание стартапа</div>
+  <h2><span class="gradient-text">AkademHub</span> — что это такое</h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <p>AkademHub (akademhub.uz) — это цифровая коммуникационная платформа нового поколения, созданная для объединения участников академической экосистемы в едином медиапространстве.</p>
+      <p>На текущем этапе платформа функционирует как агрегатор и каталог академических конференций с возможностью фильтрации по направлению, формату (онлайн / офлайн / смешанный), стране и языку проведения.</p>
+
+      <div class="divider"></div>
+
+      <div class="grid-2" style="gap:16px;">
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px;">ДОМЕН</div>
+          <div style="font-weight:600;font-size:15px;">akademhub.uz</div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px;">СТАДИЯ</div>
+          <div style="font-weight:600;font-size:15px;">MVP / Early Stage</div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px;">РЫНОК</div>
+          <div style="font-weight:600;font-size:15px;">Узбекистан / СНГ</div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px;">МОДЕЛЬ</div>
+          <div style="font-weight:600;font-size:15px;">B2B2C Platform</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-col">
+      <div class="card card-accent-blue">
+        <div class="icon-wrap icon-blue">🏛️</div>
+        <h3>Университеты</h3>
+        <p style="font-size:13px;">Публикация конференций, привлечение участников, повышение видимости научной деятельности</p>
+      </div>
+      <div class="card card-accent-green">
+        <div class="icon-wrap icon-green">🔭</div>
+        <h3>Исследователи</h3>
+        <p style="font-size:13px;">Поиск релевантных площадок, нетворкинг, поиск партнёров для совместных проектов</p>
+      </div>
+      <div class="card card-accent-purple">
+        <div class="icon-wrap icon-purple">💼</div>
+        <h3>Бизнес и инвесторы</h3>
+        <p style="font-size:13px;">Выход на академическую среду, поиск инновационных проектов, поддержка R&D</p>
+      </div>
+      <div class="card card-accent-amber">
+        <div class="icon-wrap icon-amber">🎓</div>
+        <h3>Студенты</h3>
+        <p style="font-size:13px;">Участие в конференциях, публикация первых исследований, вход в научное сообщество</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 04 — ПРОБЛЕМА РЫНКА ===== -->
+<div class="slide" id="slide-04">
+  <div class="slide-number">04 / 40</div>
+  <div class="eyebrow">Проблема рынка</div>
+  <h2>Системный <span class="gradient-text">коммуникационный разрыв</span></h2>
+
+  <p style="max-width:700px;margin-bottom:36px;">Академическая среда испытывает структурный дефицит коммуникации по нескольким ключевым направлениям, каждое из которых является самостоятельной проблемой и частью системного кризиса.</p>
+
+  <div class="grid-2">
+    <div class="card card-accent-red">
+      <span class="tag tag-red" style="margin-bottom:16px;">Проблема A</span>
+      <h3>Изолированность науки</h3>
+      <p style="font-size:13px;">Научные результаты остаются внутри академических кругов и не проникают в бизнес-среду, медиапространство и общественный дискурс. Отсутствует инфраструктура трансфера знаний.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <span class="tag tag-amber" style="margin-bottom:16px;">Проблема B</span>
+      <h3>Формализация конференций</h3>
+      <p style="font-size:13px;">Конференции превратились в механизм публикационной активности, а не площадку реального научного обмена. Отсутствуют агрегаторы с фильтрацией и систематизацией мероприятий.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <span class="tag tag-purple" style="margin-bottom:16px;">Проблема C</span>
+      <h3>Отсутствие академического нетворкинга</h3>
+      <p style="font-size:13px;">Исследователи, студенты и организации не имеют единой платформы для поиска партнёров, коллаборации и обмена экспертизой. Профессиональные связи формируются случайно.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <span class="tag tag-blue" style="margin-bottom:16px;">Проблема D</span>
+      <h3>Непрозрачность научной деятельности</h3>
+      <p style="font-size:13px;">Рейтинги, публикации, достижения университетов и исследователей не агрегированы. Бизнес и инвесторы не видят потенциал академической среды и не знают, как в неё войти.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:28px;">
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Ключевой вывод</div>
+        <p style="margin:0;font-size:14px;color:var(--text-primary);">Рынок требует не просто очередного каталога событий, а полноценной коммуникационной инфраструктуры — медиапространства, объединяющего всех участников академической экосистемы.</p>
+      </div>
+      <div class="tag tag-green" style="padding:8px 20px;font-size:13px;">→ Это и есть AkademHub</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 05 — АНАЛИЗ СИТУАЦИИ ===== -->
+<div class="slide" id="slide-05">
+  <div class="slide-number">05 / 40</div>
+  <div class="eyebrow">Анализ существующей ситуации</div>
+  <h2>Состояние академической среды <span class="gradient-text">сегодня</span></h2>
+
+  <div class="grid-2" style="gap:40px;align-items:start;">
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">📊 Количественные показатели</h3>
+      <div class="flex-col" style="gap:14px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;color:var(--text-secondary);">Охват университетов в регионе</span>
+            <span style="font-size:13px;color:var(--accent);font-weight:600;">170+</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:85%;background:linear-gradient(90deg,var(--accent3),var(--accent));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;color:var(--text-secondary);">Доля конференций без digital-присутствия</span>
+            <span style="font-size:13px;color:var(--accent5);font-weight:600;">~65%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:65%;background:linear-gradient(90deg,var(--accent5),var(--accent4));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;color:var(--text-secondary);">Молодёжь (18–35) в академической среде</span>
+            <span style="font-size:13px;color:var(--accent);font-weight:600;">~60%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:60%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;color:var(--text-secondary);">Интернет-проникновение (Узбекистан)</span>
+            <span style="font-size:13px;color:var(--accent3);font-weight:600;">76%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:76%;background:linear-gradient(90deg,var(--accent3),var(--accent));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;color:var(--text-secondary);">Рост рынка EdTech в СНГ (CAGR)</span>
+            <span style="font-size:13px;color:var(--accent4);font-weight:600;">18%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:18%;background:linear-gradient(90deg,var(--accent4),var(--accent5));"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:16px;">🔎 Качественная картина</h3>
+      <ul class="feature-list">
+        <li>Отсутствует централизованная база академических мероприятий в регионе</li>
+        <li>Коммуникация между учёными преимущественно офлайновая и неформальная</li>
+        <li>Университеты конкурируют, не сотрудничают — нет культуры открытой коллаборации</li>
+        <li>Бизнес-сообщество не имеет прозрачных механизмов выхода на науку</li>
+        <li>Молодые исследователи лишены менторства и профессиональной сети</li>
+        <li>Государство вкладывает в науку, но не имеет инструментов измерения эффекта</li>
+        <li>Международные партнёры затрудняются найти узбекских академических контрагентов</li>
+        <li>Нет единого академического бренда страны в глобальном пространстве</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 06 — ФИЛОСОФИЯ ===== -->
+<div class="slide" id="slide-06">
+  <div class="slide-number">06 / 40</div>
+  <div class="eyebrow">Философия проекта</div>
+  <h2>Идеология <span class="gradient-text">AkademHub</span></h2>
+
+  <div class="big-quote">
+    «Наука без коммуникации — это свет в запертой комнате. AkademHub открывает двери.»
+  </div>
+
+  <div class="grid-3" style="margin-top:28px;">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🧠</div>
+      <h3>Открытое знание</h3>
+      <p style="font-size:13px;">Научные идеи должны свободно циркулировать между университетами, бизнесом и обществом. Барьеры доступа — это барьеры прогресса.</p>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">🤝</div>
+      <h3>Коллаборация как норма</h3>
+      <p style="font-size:13px;">AkademHub строит культуру, в которой сотрудничество между университетами, странами и дисциплинами воспринимается как норма, а не исключение.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">🌱</div>
+      <h3>Наука для жизни</h3>
+      <p style="font-size:13px;">Исследования должны решать реальные задачи — социальные, экономические, экологические. Прикладная наука — это ответственность перед обществом.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">🔦</div>
+      <h3>Прозрачность</h3>
+      <p style="font-size:13px;">Академическая деятельность должна быть видимой, измеримой и доступной. Только прозрачность создаёт доверие и привлекает инвестиции.</p>
+    </div>
+    <div class="card">
+      <div class="icon-wrap icon-red">🚀</div>
+      <h3>Молодёжь в центре</h3>
+      <p style="font-size:13px;">Следующее поколение исследователей — главный ресурс региона. AkademHub — их точка входа в мировую науку.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🌏</div>
+      <h3>Глобальный масштаб</h3>
+      <p style="font-size:13px;">Региональная платформа с глобальными амбициями. Связывать Узбекистан с мировой академической сетью — стратегический приоритет.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 07 — МИССИЯ ===== -->
+<div class="slide" id="slide-07">
+  <div class="slide-number">07 / 40</div>
+  <div class="eyebrow">Миссия проекта</div>
+  <h2>Зачем <span class="gradient-text">мы существуем</span></h2>
+
+  <div class="highlight-box" style="margin-bottom:40px;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;">Mission Statement</div>
+    <p style="font-size:20px;color:var(--text-primary);line-height:1.6;margin:0;font-weight:500;">
+      AkademHub создаёт единое цифровое коммуникационное пространство для академического сообщества, устраняя разрыв между наукой, бизнесом и обществом, и формирует культуру прикладных исследований и открытой коллаборации в Центральной Азии.
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div style="text-align:center;padding:28px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:40px;margin-bottom:12px;">🔗</div>
+      <div style="font-weight:700;margin-bottom:8px;">Объединять</div>
+      <p style="font-size:13px;">Создавать связи между участниками академической экосистемы, ранее изолированными друг от друга</p>
+    </div>
+    <div style="text-align:center;padding:28px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:40px;margin-bottom:12px;">📡</div>
+      <div style="font-weight:700;margin-bottom:8px;">Транслировать</div>
+      <p style="font-size:13px;">Доносить научные достижения и идеи до бизнеса, общества и государства в понятном формате</p>
+    </div>
+    <div style="text-align:center;padding:28px 20px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:40px;margin-bottom:12px;">🌱</div>
+      <div style="font-weight:700;margin-bottom:8px;">Развивать</div>
+      <p style="font-size:13px;">Поддерживать рост исследовательской активности и формировать новую академическую культуру</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 08 — ВИДЕНИЕ ===== -->
+<div class="slide" id="slide-08">
+  <div class="slide-number">08 / 40</div>
+  <div class="eyebrow">Видение проекта</div>
+  <h2>Каким мы видим <span class="gradient-text">будущее</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <div class="highlight-box" style="margin-bottom:24px;">
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:12px;">Vision Statement</div>
+        <p style="font-size:16px;color:var(--text-primary);line-height:1.7;margin:0;">
+          К 2030 году AkademHub становится ведущим академическим коммуникационным хабом Центральной Азии — пространством, где наука, бизнес, государство и общество находят друг друга и создают вместе.
+        </p>
+      </div>
+
+      <ul class="feature-list">
+        <li>Главный академический коммуникационный хаб региона</li>
+        <li>Площадка для международных конференций и форумов</li>
+        <li>Система академических рейтингов университетов и исследователей</li>
+        <li>Инструмент взаимодействия бизнеса и науки</li>
+        <li>Организатор ежегодного Форума науки и инноваций</li>
+        <li>Международное сотрудничество с глобальными академическими сетями</li>
+      </ul>
+    </div>
+
+    <div class="flex-col">
+      <div class="card card-accent-blue">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Ежегодный форум науки и инноваций</div>
+        <p style="font-size:13px;margin:0;">Флагманское событие платформы: награждение лучших исследователей, университетов, инвесторов. Презентация результатов года. Обсуждение актуальных проблем науки и общества.</p>
+      </div>
+      <div class="card card-accent-green">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent3);margin-bottom:8px;">Академические рейтинги</div>
+        <p style="font-size:13px;margin:0;">Прозрачная система оценки активности университетов, исследователей и студентов. Инструмент репутационного роста для академических организаций.</p>
+      </div>
+      <div class="card card-accent-purple">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;">Science-Business Match</div>
+        <p style="font-size:13px;margin:0;">Механизм поиска партнёров: бизнес находит академические команды для R&D, инвесторы — инновационные проекты, исследователи — финансирование.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 09 — ЦЕЛИ ===== -->
+<div class="slide" id="slide-09">
+  <div class="slide-number">09 / 40</div>
+  <div class="eyebrow">Цели проекта</div>
+  <h2>Стратегические <span class="gradient-text">ориентиры</span></h2>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <span class="tag tag-blue" style="margin-bottom:16px;">Коммуникационная цель</span>
+      <h3>Устранение информационного барьера</h3>
+      <p style="font-size:13px;">Создать единое цифровое пространство, где вся информация об академических мероприятиях, участниках и возможностях доступна в одном месте.</p>
+    </div>
+    <div class="card card-accent-green">
+      <span class="tag tag-green" style="margin-bottom:16px;">Экосистемная цель</span>
+      <h3>Формирование академического комьюнити</h3>
+      <p style="font-size:13px;">Создать живое сообщество учёных, студентов, бизнеса и государства с общей культурой открытого знания и прикладных исследований.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <span class="tag tag-purple" style="margin-bottom:16px;">Инфраструктурная цель</span>
+      <h3>Стать академической инфраструктурой</h3>
+      <p style="font-size:13px;">Превратиться в обязательный инструмент для организации и поиска конференций, нетворкинга и поиска партнёров в регионе.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <span class="tag tag-amber" style="margin-bottom:16px;">Экономическая цель</span>
+      <h3>Устойчивая бизнес-модель</h3>
+      <p style="font-size:13px;">Построить диверсифицированную модель монетизации на основе B2B-сервисов, рекламы, подписок и организационных услуг.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-red" style="margin-bottom:16px;">Социальная цель</span>
+      <h3>Поддержка молодёжи и инноваций</h3>
+      <p style="font-size:13px;">Создать точку входа для молодых исследователей в мировую науку, снизить барьер участия в академической жизни и стимулировать инновационную активность.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <span class="tag tag-blue" style="margin-bottom:16px;">Геополитическая цель</span>
+      <h3>Международное позиционирование</h3>
+      <p style="font-size:13px;">Создать глобально видимую точку входа для иностранных партнёров в академическую среду Узбекистана и Центральной Азии.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10 — ЗАДАЧИ ===== -->
+<div class="slide" id="slide-10">
+  <div class="slide-number">10 / 40</div>
+  <div class="eyebrow">Задачи проекта</div>
+  <h2>Операционные <span class="gradient-text">приоритеты</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:20px;">Краткосрочные (0–12 мес.)</h3>
+      <ul class="feature-list">
+        <li>Запуск полноценного каталога конференций с верификацией организаторов</li>
+        <li>Регистрация 50+ университетов в качестве партнёров</li>
+        <li>Набор базы из 1000+ зарегистрированных пользователей</li>
+        <li>Запуск системы уведомлений о новых конференциях по интересам</li>
+        <li>Выстраивание партнёрств с ведущими ВУЗами Узбекистана</li>
+        <li>Разработка и запуск мобильного приложения (iOS/Android)</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Среднесрочные (1–3 года)</h3>
+      <ul class="feature-list">
+        <li>Запуск функционала профилей исследователей и портфолио</li>
+        <li>Внедрение инструментов нетворкинга и поиска партнёров</li>
+        <li>Создание раздела академических рейтингов</li>
+        <li>Выход на рынки Казахстана, Кыргызстана, Таджикистана</li>
+        <li>Проведение первого Форума науки и инноваций</li>
+        <li>Запуск B2B-модели для бизнеса и инвесторов</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card-accent-blue" style="margin-top:28px;">
+    <h3 style="color:var(--accent);margin-bottom:16px;">Долгосрочные задачи (3–5 лет)</h3>
+    <div class="grid-3">
+      <div>
+        <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🌐 Международная экспансия</div>
+        <p style="font-size:13px;margin:0;">Выход за пределы СНГ, интеграция с глобальными академическими сетями (Elsevier, ResearchGate, Scopus-партнёры)</p>
+      </div>
+      <div>
+        <div style="font-weight:600;margin-bottom:6px;font-size:14px;">🏆 Рейтинговая система</div>
+        <p style="font-size:13px;margin:0;">Признанный региональный академический рейтинг университетов и исследователей, цитируемый СМИ и государством</p>
+      </div>
+      <div>
+        <div style="font-weight:600;margin-bottom:6px;font-size:14px;">💰 Инвестиционная платформа</div>
+        <p style="font-size:13px;margin:0;">Механизм Science-Business Match с верифицированными проектами и инвесторами, первые успешные кейсы трансфера технологий</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11 — ЦЕЛЕВАЯ АУДИТОРИЯ ===== -->
+<div class="slide" id="slide-11">
+  <div class="slide-number">11 / 40</div>
+  <div class="eyebrow">Целевая аудитория</div>
+  <h2>Кому служит <span class="gradient-text">AkademHub</span></h2>
+
+  <div class="grid-auto">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🎓</div>
+      <h3>Студенты бакалавриата и магистратуры</h3>
+      <p style="font-size:13px;">Ищут первые конференции для участия, публикации и профессионального роста. Высокая вовлечённость в digital-среду.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-blue">18–25 лет</span>
+        <span class="tag tag-green">High Digital</span>
+      </div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">🔬</div>
+      <h3>Исследователи и аспиранты</h3>
+      <p style="font-size:13px;">Нуждаются в нетворкинге, поиске конференций и соавторов. Ключевой производитель контента платформы.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-green">25–45 лет</span>
+        <span class="tag tag-amber">Power Users</span>
+      </div>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">🏫</div>
+      <h3>Университеты и кафедры</h3>
+      <p style="font-size:13px;">Публикуют свои конференции, управляют видимостью, привлекают участников и повышают академическую репутацию.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-purple">B2B</span>
+        <span class="tag tag-blue">Организаторы</span>
+      </div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">💼</div>
+      <h3>Бизнес-структуры</h3>
+      <p style="font-size:13px;">Ищут R&D-партнёров, инновационные команды, способы поддержки науки для повышения HR-бренда и деловой репутации.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-amber">B2B</span>
+        <span class="tag tag-green">Высокий LTV</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="icon-wrap icon-red">💰</div>
+      <h3>Инвесторы и фонды</h3>
+      <p style="font-size:13px;">Ищут инновационные стартапы и академические проекты для инвестирования. Заинтересованы в прозрачной аналитике.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-red">Венчур</span>
+        <span class="tag tag-purple">Гранты</span>
+      </div>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🏛️</div>
+      <h3>Государственные структуры</h3>
+      <p style="font-size:13px;">Министерства образования, инновационные агентства. Используют платформу как инструмент мониторинга и развития науки.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-blue">Регулятор</span>
+        <span class="tag tag-green">Партнёр</span>
+      </div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">🌍</div>
+      <h3>Международные партнёры</h3>
+      <p style="font-size:13px;">Иностранные университеты, фонды, организации, ищущие точку входа в академическую среду Центральной Азии.</p>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="tag tag-green">Глобальный</span>
+        <span class="tag tag-purple">Партнёрство</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12 — СЕГМЕНТАЦИЯ ===== -->
+<div class="slide" id="slide-12">
+  <div class="slide-number">12 / 40</div>
+  <div class="eyebrow">Сегментация аудитории</div>
+  <h2>Матрица <span class="gradient-text">пользователей</span></h2>
+
+  <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Сегмент</th>
+          <th>Потребность</th>
+          <th>Вовлечённость</th>
+          <th>Монетизация</th>
+          <th>Приоритет</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Студенты</strong></td>
+          <td>Найти конференцию, опубликоваться</td>
+          <td><span class="tag tag-green">Высокая</span></td>
+          <td>Freemium</td>
+          <td><span class="tag tag-blue">Рост аудитории</span></td>
+        </tr>
+        <tr>
+          <td><strong>Исследователи</strong></td>
+          <td>Нетворкинг, партнёры, видимость</td>
+          <td><span class="tag tag-green">Высокая</span></td>
+          <td>Premium аккаунт</td>
+          <td><span class="tag tag-green">Ядро платформы</span></td>
+        </tr>
+        <tr>
+          <td><strong>Университеты</strong></td>
+          <td>Публикация событий, репутация</td>
+          <td><span class="tag tag-amber">Средняя</span></td>
+          <td>B2B подписка</td>
+          <td><span class="tag tag-green">Основной доход</span></td>
+        </tr>
+        <tr>
+          <td><strong>Бизнес</strong></td>
+          <td>R&D-партнёры, HR-бренд</td>
+          <td><span class="tag tag-amber">Средняя</span></td>
+          <td>Corporate план</td>
+          <td><span class="tag tag-amber">Высокий LTV</span></td>
+        </tr>
+        <tr>
+          <td><strong>Инвесторы</strong></td>
+          <td>Deal flow, аналитика</td>
+          <td><span class="tag tag-red">Низкая</span></td>
+          <td>Премиум доступ</td>
+          <td><span class="tag tag-purple">Стратегический</span></td>
+        </tr>
+        <tr>
+          <td><strong>Государство</strong></td>
+          <td>Мониторинг, политика</td>
+          <td><span class="tag tag-red">Низкая</span></td>
+          <td>Партнёрство</td>
+          <td><span class="tag tag-blue">Легитимность</span></td>
+        </tr>
+        <tr>
+          <td><strong>Международные</strong></td>
+          <td>Точка входа в регион</td>
+          <td><span class="tag tag-amber">Средняя</span></td>
+          <td>Partnership fee</td>
+          <td><span class="tag tag-amber">Масштабирование</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-3" style="margin-top:28px;">
+    <div class="card card-accent-blue">
+      <div class="stat-value gradient-text">B2C</div>
+      <div class="stat-label">Студенты + Исследователи</div>
+      <p style="font-size:12px;margin-top:8px;">Freemium модель, высокий объём, сетевой эффект</p>
+    </div>
+    <div class="card card-accent-green">
+      <div class="stat-value gradient-text-green">B2B</div>
+      <div class="stat-label">Университеты + Бизнес</div>
+      <p style="font-size:12px;margin-top:8px;">Подписки, размещение, корпоративные услуги</p>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="stat-value" style="background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">G2P</div>
+      <div class="stat-label">Государство + Партнёры</div>
+      <p style="font-size:12px;margin-top:8px;">Стратегические партнёрства, гранты, государственные контракты</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13 — КАРТА ЗАИНТЕРЕСОВАННЫХ СТОРОН ===== -->
+<div class="slide" id="slide-13">
+  <div class="slide-number">13 / 40</div>
+  <div class="eyebrow">Карта заинтересованных сторон</div>
+  <h2>Stakeholder <span class="gradient-text">Map</span></h2>
+
+  <div class="stakeholder-map" style="min-height:260px;gap:16px;">
+    <div class="stakeholder-node" style="background:rgba(5,150,105,0.08);border-color:rgba(5,150,105,0.25);color:var(--accent3);">🎓 Студенты</div>
+    <div class="stakeholder-node" style="background:rgba(37,99,235,0.08);border-color:rgba(37,99,235,0.25);color:var(--accent);">🔬 Исследователи</div>
+    <div class="hub-center">AkademHub</div>
+    <div class="stakeholder-node" style="background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.25);color:var(--accent2);">🏫 Университеты</div>
+    <div class="stakeholder-node" style="background:rgba(217,119,6,0.08);border-color:rgba(217,119,6,0.25);color:var(--accent4);">💼 Бизнес</div>
+    <div class="stakeholder-node" style="background:rgba(220,38,38,0.08);border-color:rgba(220,38,38,0.25);color:var(--accent5);">💰 Инвесторы</div>
+    <div class="stakeholder-node" style="background:rgba(37,99,235,0.08);border-color:rgba(37,99,235,0.25);color:var(--accent);">🏛️ Государство</div>
+    <div class="stakeholder-node" style="background:rgba(5,150,105,0.08);border-color:rgba(5,150,105,0.25);color:var(--accent3);">🌍 Международные</div>
+    <div class="stakeholder-node" style="background:rgba(124,58,237,0.08);border-color:rgba(124,58,237,0.25);color:var(--accent2);">📰 СМИ</div>
+    <div class="stakeholder-node" style="background:rgba(217,119,6,0.08);border-color:rgba(217,119,6,0.25);color:var(--accent4);">🤝 НКО</div>
+  </div>
+
+  <div class="grid-2" style="margin-top:28px;">
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">Первичные стейкхолдеры (прямой интерес)</h3>
+      <ul class="feature-list">
+        <li>Студенты и аспиранты — основные пользователи</li>
+        <li>Исследователи — производители контента</li>
+        <li>Университеты — организаторы мероприятий</li>
+        <li>Бизнес — потребители академических продуктов</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:16px;">Вторичные стейкхолдеры (влияние на среду)</h3>
+      <ul class="feature-list">
+        <li>Государство — формирует регуляторную среду и финансирование</li>
+        <li>Инвесторы — обеспечивают ресурсную базу инноваций</li>
+        <li>СМИ — усиливают коммуникационный эффект</li>
+        <li>НКО и международные организации — партнёры роста</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14 — АНАЛИЗ МАССОВЫХ КОММУНИКАЦИЙ ===== -->
+<div class="slide" id="slide-14">
+  <div class="slide-number">14 / 40</div>
+  <div class="eyebrow">Анализ массовых коммуникаций</div>
+  <h2>AkademHub как <span class="gradient-text">медиасистема</span></h2>
+
+  <p style="max-width:700px;margin-bottom:36px;">С точки зрения теории массовых коммуникаций AkademHub функционирует как многоканальная медиасистема с множеством участников — отправителей и получателей сообщений.</p>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:20px;">Модель коммуникации Шеннона-Уивера применительно к AkademHub</h3>
+      <div class="flex-col" style="gap:8px;">
+        <div class="card" style="display:flex;gap:12px;align-items:flex-start;padding:16px;">
+          <span style="font-size:20px;">📤</span>
+          <div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Источник</div>
+            <p style="font-size:12px;margin:0;">Университеты, организаторы конференций, исследователи — создатели академического контента</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:12px;align-items:flex-start;padding:16px;">
+          <span style="font-size:20px;">🔄</span>
+          <div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Канал (AkademHub)</div>
+            <p style="font-size:12px;margin:0;">Платформа как медиатор и транспортная инфраструктура академических сообщений</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:12px;align-items:flex-start;padding:16px;">
+          <span style="font-size:20px;">📥</span>
+          <div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Получатель</div>
+            <p style="font-size:12px;margin:0;">Студенты, исследователи, бизнес, государство — потребители академического контента</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:12px;align-items:flex-start;padding:16px;">
+          <span style="font-size:20px;">↩️</span>
+          <div>
+            <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Обратная связь</div>
+            <p style="font-size:12px;margin:0;">Регистрации, участие, рейтинги, комментарии, репосты — петля обратной связи</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Типы коммуникации на платформе</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card">
+          <span class="tag tag-blue" style="margin-bottom:10px;">Одна ко многим (1:N)</span>
+          <p style="font-size:13px;margin:0;">Университет публикует конференцию → тысячи исследователей узнают о ней. Классическая массовая коммуникация.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-green" style="margin-bottom:10px;">Многие ко многим (N:N)</span>
+          <p style="font-size:13px;margin:0;">Нетворкинг между участниками, обсуждения, коллаборации. Социальный граф академического сообщества.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-purple" style="margin-bottom:10px;">Один к одному (1:1)</span>
+          <p style="font-size:13px;margin:0;">Прямые сообщения между исследователями, переговоры об участии, персональные рекомендации.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-amber" style="margin-bottom:10px;">Алгоритмическая (A:N)</span>
+          <p style="font-size:13px;margin:0;">Платформа как активный участник: персонализированные рекомендации, уведомления по интересам.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15 — КОММУНИКАЦИОННЫЕ ПОТОКИ ===== -->
+<div class="slide" id="slide-15">
+  <div class="slide-number">15 / 40</div>
+  <div class="eyebrow">Коммуникационные потоки</div>
+  <h2>Архитектура <span class="gradient-text">взаимодействий</span></h2>
+
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🏫 → 🎓</div>
+      <h3 style="font-size:15px;">Университет → Сообщество</h3>
+      <p style="font-size:13px;">Публикация конференций, объявлений, результатов конкурсов. Формирование академической повестки.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:90%;background:var(--accent);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: высокая</div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">🔬 ↔ 🔬</div>
+      <h3 style="font-size:15px;">Исследователь → Исследователь</h3>
+      <p style="font-size:13px;">Горизонтальный нетворкинг, соавторство, обмен экспертизой между учёными разных дисциплин.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:70%;background:var(--accent3);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: средняя</div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">💼 → 🔬</div>
+      <h3 style="font-size:15px;">Бизнес → Наука</h3>
+      <p style="font-size:13px;">Поиск R&D-партнёров, технических экспертов, запрос на прикладные исследования.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:40%;background:var(--accent4);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: развивается</div>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">🌍 → 🇺🇿</div>
+      <h3 style="font-size:15px;">Международные → Локальные</h3>
+      <p style="font-size:13px;">Приглашения к сотрудничеству, гранты, совместные конференции, академический обмен.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:35%;background:var(--accent2);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: начальная</div>
+    </div>
+    <div class="card">
+      <div class="icon-wrap icon-red">🎓 → 💼</div>
+      <h3 style="font-size:15px;">Молодёжь → Рынок труда</h3>
+      <p style="font-size:13px;">Представление достижений молодых исследователей потенциальным работодателям и инвесторам.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:55%;background:var(--accent5);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: средняя</div>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🏛️ ↔ 🏫</div>
+      <h3 style="font-size:15px;">Государство ↔ Наука</h3>
+      <p style="font-size:13px;">Мониторинг научной активности, трансляция политики, финансирование и взаимодействие с вузами.</p>
+      <div class="progress-bar" style="margin-top:12px;"><div class="progress-fill" style="--target-width:60%;background:var(--accent);"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Интенсивность: средняя</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 16 — ПЛАТФОРМА КАК МЕДИАПРОСТРАНСТВО ===== -->
+<div class="slide" id="slide-16">
+  <div class="slide-number">16 / 40</div>
+  <div class="eyebrow">Роль медиапространства</div>
+  <h2>AkademHub как <span class="gradient-text">академические СМИ</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <p>AkademHub выходит за рамки сервисного продукта и функционирует как медиасреда — пространство, где формируются нарративы, строится репутация и задаётся повестка академической жизни региона.</p>
+
+      <div class="divider"></div>
+
+      <h3 style="color:var(--accent);margin-bottom:16px;">Медиафункции платформы</h3>
+      <ul class="feature-list">
+        <li><strong>Информационная:</strong> агрегация актуальных событий академической жизни</li>
+        <li><strong>Репутационная:</strong> формирование рейтингов и публичного образа организаций</li>
+        <li><strong>Социализирующая:</strong> трансляция норм и ценностей научного сообщества</li>
+        <li><strong>Интегрирующая:</strong> объединение разрозненных акторов в единое поле</li>
+        <li><strong>Мобилизующая:</strong> стимулирование участия в академической жизни</li>
+        <li><strong>Мониторинговая:</strong> отслеживание трендов и аномалий в науке</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Уровни медиавоздействия</h3>
+
+      <div class="flex-col" style="gap:16px;">
+        <div class="card card-accent-blue">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Микроуровень</div>
+          <p style="font-size:13px;margin:0;">Влияние на конкретного исследователя: осведомлённость о возможностях, формирование карьерного пути, профессиональная идентичность</p>
+        </div>
+        <div class="card card-accent-green">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent3);margin-bottom:8px;">Мезоуровень</div>
+          <p style="font-size:13px;margin:0;">Влияние на университеты и организации: институциональная видимость, конкурентное позиционирование, привлечение талантов</p>
+        </div>
+        <div class="card card-accent-purple">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;">Макроуровень</div>
+          <p style="font-size:13px;margin:0;">Влияние на общество: формирование культуры ценности знания, подъём интеллектуального капитала страны, международный имидж</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 17 — КАНАЛЫ КОММУНИКАЦИИ ===== -->
+<div class="slide" id="slide-17">
+  <div class="slide-number">17 / 40</div>
+  <div class="eyebrow">Каналы коммуникации</div>
+  <h2>Многоканальная <span class="gradient-text">экосистема</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:16px;">Собственные каналы (Owned Media)</h3>
+      <div class="flex-col" style="gap:10px;">
+        <div class="channel-item">
+          <div class="channel-icon icon-blue">🌐</div>
+          <div><div style="font-weight:600;font-size:14px;">Web-платформа akademhub.uz</div><p style="font-size:12px;margin:0;">Основной канал — поиск, регистрация, профили, каталог конференций</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-purple">📱</div>
+          <div><div style="font-weight:600;font-size:14px;">Мобильное приложение</div><p style="font-size:12px;margin:0;">iOS + Android — push-уведомления, мобильный нетворкинг</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-green">✉️</div>
+          <div><div style="font-weight:600;font-size:14px;">Email-рассылки</div><p style="font-size:12px;margin:0;">Дайджесты, персональные рекомендации конференций</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-amber">📊</div>
+          <div><div style="font-weight:600;font-size:14px;">API для партнёров</div><p style="font-size:12px;margin:0;">Интеграция с вузовскими системами, экспорт данных</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">Партнёрские и платные каналы</h3>
+      <div class="flex-col" style="gap:10px;">
+        <div class="channel-item">
+          <div class="channel-icon icon-blue">💬</div>
+          <div><div style="font-weight:600;font-size:14px;">Telegram-сообщество</div><p style="font-size:12px;margin:0;">Основной канал для СНГ-аудитории: новости, нетворкинг</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-purple">📸</div>
+          <div><div style="font-weight:600;font-size:14px;">Instagram / LinkedIn</div><p style="font-size:12px;margin:0;">Визуальный контент, кейсы, HR-бренд для B2B</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-green">🤝</div>
+          <div><div style="font-weight:600;font-size:14px;">Партнёрские каналы ВУЗов</div><p style="font-size:12px;margin:0;">Распространение через официальные каналы университетов</p></div>
+        </div>
+        <div class="channel-item">
+          <div class="channel-icon icon-amber">🎤</div>
+          <div><div style="font-weight:600;font-size:14px;">Офлайн-мероприятия</div><p style="font-size:12px;margin:0;">Презентации в университетах, участие в форумах</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 18 — CUSTOMER JOURNEY MAP ===== -->
+<div class="slide" id="slide-18">
+  <div class="slide-number">18 / 40</div>
+  <div class="eyebrow">Customer Journey Map</div>
+  <h2>Путь <span class="gradient-text">пользователя</span></h2>
+
+  <p style="margin-bottom:28px;color:var(--text-secondary);">Картирование опыта ключевого сегмента — молодого исследователя / аспиранта на пути от первого контакта с платформой до превращения в активного участника сообщества.</p>
+
+  <div style="overflow-x:auto;">
+    <div style="min-width:800px;">
+      <div class="cjm-row">
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">Параметр</div>
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">1. Осведомлённость</div>
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">2. Изучение</div>
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">3. Регистрация</div>
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">4. Первый контакт</div>
+        <div class="cjm-cell cjm-header" style="background:rgba(37,99,235,0.05);">5. Лояльность</div>
+      </div>
+      <div class="cjm-row">
+        <div class="cjm-cell" style="background:rgba(37,99,235,0.03);"><span class="cjm-stage-label">Действие</span></div>
+        <div class="cjm-cell">Видит рекламу или рекомендацию от коллеги</div>
+        <div class="cjm-cell">Заходит на сайт, изучает каталог конференций</div>
+        <div class="cjm-cell">Создаёт профиль, заполняет интересы</div>
+        <div class="cjm-cell">Регистрируется на первую конференцию</div>
+        <div class="cjm-cell">Публикует материалы, рекомендует платформу</div>
+      </div>
+      <div class="cjm-row">
+        <div class="cjm-cell" style="background:rgba(37,99,235,0.03);"><span class="cjm-stage-label">Эмоция</span></div>
+        <div class="cjm-cell" style="color:var(--accent4);">😐 Нейтральный интерес</div>
+        <div class="cjm-cell" style="color:var(--accent3);">🙂 Любопытство</div>
+        <div class="cjm-cell" style="color:var(--accent3);">😊 Вовлечённость</div>
+        <div class="cjm-cell" style="color:var(--accent);">😃 Воодушевление</div>
+        <div class="cjm-cell" style="color:var(--accent2);">🤩 Восторг и гордость</div>
+      </div>
+      <div class="cjm-row">
+        <div class="cjm-cell" style="background:rgba(37,99,235,0.03);"><span class="cjm-stage-label">Боли</span></div>
+        <div class="cjm-cell" style="color:var(--accent5);">Не знает, что такое платформа</div>
+        <div class="cjm-cell" style="color:var(--accent5);">Мало конференций, нет фильтров</div>
+        <div class="cjm-cell" style="color:var(--accent5);">Сложная регистрация</div>
+        <div class="cjm-cell" style="color:var(--accent5);">Нет поддержки, не понимает процесс</div>
+        <div class="cjm-cell" style="color:var(--accent5);">Нет причин возвращаться</div>
+      </div>
+      <div class="cjm-row">
+        <div class="cjm-cell" style="background:rgba(37,99,235,0.03);"><span class="cjm-stage-label">Решения</span></div>
+        <div class="cjm-cell" style="color:var(--accent3);">Targated ads, посевы в Telegram</div>
+        <div class="cjm-cell" style="color:var(--accent3);">SEO, онбординг, UX-оптимизация</div>
+        <div class="cjm-cell" style="color:var(--accent3);">Социальный вход (Google/Telegram)</div>
+        <div class="cjm-cell" style="color:var(--accent3);">Чат-поддержка, FAQ, менторинг</div>
+        <div class="cjm-cell" style="color:var(--accent3);">Рейтинг, бейджи, реферальная программа</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:28px;">
+    <div class="card card-accent-blue">
+      <h3 style="font-size:14px;color:var(--accent);">Критические точки контакта</h3>
+      <ul class="feature-list" style="margin-top:8px;">
+        <li>Первые 30 секунд на главной странице — решение о регистрации</li>
+        <li>Онбординг после регистрации — активация интереса</li>
+        <li>Первая успешная регистрация на конференцию — «aha moment»</li>
+      </ul>
+    </div>
+    <div class="card card-accent-green">
+      <h3 style="font-size:14px;color:var(--accent3);">Метрики успеха</h3>
+      <ul class="feature-list" style="margin-top:8px;">
+        <li>CAC (стоимость привлечения) → минимизация через organic</li>
+        <li>Activation Rate → первая регистрация на конференцию</li>
+        <li>NPS (удовлетворённость) → индикатор качества опыта</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 19 — VALUE PROPOSITION CANVAS ===== -->
+<div class="slide" id="slide-19">
+  <div class="slide-number">19 / 40</div>
+  <div class="eyebrow">Value Proposition Canvas</div>
+  <h2>Ценностное <span class="gradient-text">предложение</span></h2>
+
+  <div class="vpc-wrap" style="margin-bottom:28px;">
+    <div class="vpc-right">
+      <div class="vpc-title">Профиль клиента (Исследователь)</div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Задачи (Jobs)</div>
+        <ul class="feature-list">
+          <li>Публиковать исследования и повышать цитируемость</li>
+          <li>Находить соавторов и партнёров для проектов</li>
+          <li>Строить академическую репутацию</li>
+          <li>Оставаться в курсе событий своей области</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--accent5);margin-bottom:8px;">Боли (Pains)</div>
+        <ul class="feature-list">
+          <li>Сложно найти релевантные конференции</li>
+          <li>Изолированность от международного сообщества</li>
+          <li>Нет удобного инструмента нетворкинга</li>
+          <li>Низкая видимость своей работы</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px;">Выгоды (Gains)</div>
+        <ul class="feature-list">
+          <li>Рост цитируемости и академического рейтинга</li>
+          <li>Новые коллаборации и совместные проекты</li>
+          <li>Доступ к международным возможностям</li>
+        </ul>
+      </div>
+    </div>
+    <div class="vpc-left">
+      <div class="vpc-title">Ценностное предложение (AkademHub)</div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Продукты и услуги</div>
+        <ul class="feature-list">
+          <li>Каталог конференций с умной фильтрацией</li>
+          <li>Профили исследователей и организаций</li>
+          <li>Инструменты нетворкинга и поиска партнёров</li>
+          <li>Академические рейтинги и аналитика</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--accent5);margin-bottom:8px;">Болеутолители (Pain Relievers)</div>
+        <ul class="feature-list">
+          <li>Единое место для всех конференций региона</li>
+          <li>Умные рекомендации по интересам</li>
+          <li>Прямая связь с организаторами</li>
+          <li>Интерфейс на 3 языках (UZ/RU/EN)</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px;">Создатели выгод (Gain Creators)</div>
+        <ul class="feature-list">
+          <li>Публичные профили → рост видимости</li>
+          <li>Рейтинги → признание заслуг</li>
+          <li>Международная сеть → новые возможности</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 20 — SWOT ===== -->
+<div class="slide" id="slide-20">
+  <div class="slide-number">20 / 40</div>
+  <div class="eyebrow">SWOT-анализ</div>
+  <h2>Стратегическая <span class="gradient-text">позиция</span></h2>
+
+  <div class="swot-grid">
+    <div class="swot-cell swot-s">
+      <div class="swot-label">S — Strengths · Сильные стороны</div>
+      <ul class="feature-list">
+        <li>Первопроходец на рынке — нет прямых аналогов в регионе</li>
+        <li>Чёткая ниша с высоким потенциалом роста</li>
+        <li>Многоязычность (UZ/RU/EN) — широкий охват</li>
+        <li>Мощная идеологическая база и социальная миссия</li>
+        <li>Современный технологический стек, масштабируемость</li>
+        <li>Соответствие государственному курсу на цифровизацию</li>
+      </ul>
+    </div>
+    <div class="swot-cell swot-w">
+      <div class="swot-label">W — Weaknesses · Слабые стороны</div>
+      <ul class="feature-list">
+        <li>Ранняя стадия: ограниченный контент и пользовательская база</li>
+        <li>Отсутствие опубликованных конференций на старте</li>
+        <li>Невысокая узнаваемость бренда</li>
+        <li>Зависимость от добровольного наполнения каталога</li>
+        <li>Ограниченность ресурсов команды на MVP-стадии</li>
+        <li>Длинный цикл выхода на окупаемость</li>
+      </ul>
+    </div>
+    <div class="swot-cell swot-o">
+      <div class="swot-label">O — Opportunities · Возможности</div>
+      <ul class="feature-list">
+        <li>Государственная поддержка инновационного сектора</li>
+        <li>Рост числа ВУЗов и исследователей в регионе</li>
+        <li>Интерес международных фондов к Центральной Азии</li>
+        <li>Цифровизация образования: рынок готов к платформам</li>
+        <li>Дефицит качественных инструментов академической коммуникации</li>
+        <li>Грантовые программы для академических EdTech-проектов</li>
+      </ul>
+    </div>
+    <div class="swot-cell swot-t">
+      <div class="swot-label">T — Threats · Угрозы</div>
+      <ul class="feature-list">
+        <li>Вход крупных международных игроков (ResearchGate, Academia.edu)</li>
+        <li>Низкая цифровая культура части академической аудитории</li>
+        <li>Сопротивление изменениям в консервативной среде ВУЗов</li>
+        <li>Регуляторные риски в сфере цифровых данных</li>
+        <li>Копирование идеи конкурентами с большими ресурсами</li>
+        <li>Низкая монетизационная готовность академической аудитории</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card-accent-blue" style="margin-top:28px;">
+    <h3 style="font-size:14px;margin-bottom:12px;">SWOT-интерпретация: ключевые стратегические выводы</h3>
+    <div class="grid-2">
+      <div>
+        <div style="font-size:12px;color:var(--accent3);font-weight:600;margin-bottom:6px;">SO-стратегия (рост)</div>
+        <p style="font-size:12px;margin:0;">Использовать статус первопроходца + государственная поддержка = быстрый захват рынка и формирование стандарта</p>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--accent5);font-weight:600;margin-bottom:6px;">WT-стратегия (защита)</div>
+        <p style="font-size:12px;margin:0;">Наполнить каталог до появления конкурентов и выстроить лояльность сообщества как барьер входа</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 21 — PEST ===== -->
+<div class="slide" id="slide-21">
+  <div class="slide-number">21 / 40</div>
+  <div class="eyebrow">PEST-анализ</div>
+  <h2>Макросреда <span class="gradient-text">проекта</span></h2>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🏛️</div>
+      <h3>P — Политические факторы</h3>
+      <div class="divider" style="margin:12px 0;width:40px;height:2px;"></div>
+      <ul class="feature-list">
+        <li>Государственная стратегия «Цифровой Узбекистан 2030» — прямая поддержка</li>
+        <li>Закон о развитии науки и инноваций создаёт благоприятную среду</li>
+        <li>Министерство инновационного развития — потенциальный партнёр</li>
+        <li>Открытость к иностранным инвестициям в образовательный сектор</li>
+        <li>Политика привлечения зарубежных университетов в страну</li>
+      </ul>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">📈</div>
+      <h3>E — Экономические факторы</h3>
+      <div class="divider" style="margin:12px 0;width:40px;height:2px;background:linear-gradient(90deg,var(--accent3),var(--accent));"></div>
+      <ul class="feature-list">
+        <li>ВВП Узбекистана растёт со средним темпом 5–6% в год</li>
+        <li>Рост среднего класса → рост платёжеспособной аудитории</li>
+        <li>Развитие стартап-экосистемы: фонды, акселераторы, венчур</li>
+        <li>Интерес международного бизнеса к рынку Центральной Азии</li>
+        <li>Бюджеты ВУЗов на цифровые инструменты постепенно растут</li>
+      </ul>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">👥</div>
+      <h3>S — Социальные факторы</h3>
+      <div class="divider" style="margin:12px 0;width:40px;height:2px;background:linear-gradient(90deg,var(--accent2),var(--accent5));"></div>
+      <ul class="feature-list">
+        <li>Узбекистан — одна из самых молодых наций региона (медиан. возраст ~28 лет)</li>
+        <li>Высокий запрос на образование и карьерный рост среди молодёжи</li>
+        <li>Рост интереса к научной деятельности и публикациям</li>
+        <li>Культура уважения к образованию — основа лояльности</li>
+        <li>Активное использование Telegram как основного медиа СНГ-аудитории</li>
+      </ul>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">💻</div>
+      <h3>T — Технологические факторы</h3>
+      <div class="divider" style="margin:12px 0;width:40px;height:2px;background:linear-gradient(90deg,var(--accent4),var(--accent5));"></div>
+      <ul class="feature-list">
+        <li>Интернет-проникновение 76% и стремительно растёт</li>
+        <li>Смартфон-доминирование: 80%+ мобильного трафика</li>
+        <li>Развитие облачных технологий снижает стоимость инфраструктуры</li>
+        <li>ИИ-инструменты открывают возможности персонализации</li>
+        <li>Telegram-боты как дешёвый канал дистрибуции контента</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 22 — КОНКУРЕНТНЫЙ АНАЛИЗ ===== -->
+<div class="slide" id="slide-22">
+  <div class="slide-number">22 / 40</div>
+  <div class="eyebrow">Конкурентный анализ</div>
+  <h2>Конкурентная <span class="gradient-text">карта</span></h2>
+
+  <div style="overflow-x:auto;margin-bottom:28px;">
+    <table class="comp-matrix">
+      <thead>
+        <tr>
+          <th>Платформа</th>
+          <th>Регион</th>
+          <th>Каталог конф.</th>
+          <th>Нетворкинг</th>
+          <th>Местный фокус</th>
+          <th>Рейтинги</th>
+          <th>Бизнес-интеграция</th>
+          <th>Молодёжь</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AkademHub</td>
+          <td>UZ / CentralAsia</td>
+          <td><span class="comp-dot dot-full"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-full"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-full"></span></td>
+        </tr>
+        <tr>
+          <td>ResearchGate</td>
+          <td>Global</td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-full"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+        </tr>
+        <tr>
+          <td>Academia.edu</td>
+          <td>Global</td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+        </tr>
+        <tr>
+          <td>Конф-конференции.рф</td>
+          <td>RU</td>
+          <td><span class="comp-dot dot-full"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+        </tr>
+        <tr>
+          <td>Eventbrite</td>
+          <td>Global</td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+          <td><span class="comp-dot dot-half"></span></td>
+          <td><span class="comp-dot dot-empty"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;">
+    <span><span class="comp-dot dot-full" style="margin-right:6px;"></span>Полное соответствие</span>
+    <span><span class="comp-dot dot-half" style="margin-right:6px;"></span>Частичное соответствие</span>
+    <span><span class="comp-dot dot-empty" style="margin-right:6px;"></span>Отсутствует</span>
+  </div>
+
+  <div class="highlight-box">
+    <p style="font-size:15px;color:var(--text-primary);margin:0;">
+      <strong>Вывод:</strong> AkademHub занимает уникальную нишу, объединяя функции каталога конференций, нетворкинговой платформы и регионального академического медиа. Ни один из существующих конкурентов не имеет фокуса на Центральной Азии, многоязычности и ориентации на молодёжь одновременно.
+    </p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 23 — АНАЛИЗ СИЛЬНЫХ/СЛАБЫХ СТОРОН РЫНКА ===== -->
+<div class="slide" id="slide-23">
+  <div class="slide-number">23 / 40</div>
+  <div class="eyebrow">Анализ рынка</div>
+  <h2>Сила и слабость <span class="gradient-text">рыночной среды</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">Силы рынка (Market Forces)</h3>
+      <div class="flex-col" style="gap:10px;">
+        <div class="card">
+          <span class="tag tag-green" style="margin-bottom:8px;">Сила</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Незрелость рынка = первопроходец</div>
+          <p style="font-size:12px;margin:0;">Академический digital-рынок Узбекистана практически не сформирован. Кто придёт первым — задаёт стандарт.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-green" style="margin-bottom:8px;">Сила</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Сетевой эффект</div>
+          <p style="font-size:12px;margin:0;">Ценность платформы растёт с каждым новым пользователем. Первые 10 000 пользователей привлекают следующие 50 000 органически.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-green" style="margin-bottom:8px;">Сила</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Низкая стоимость переключения</div>
+          <p style="font-size:12px;margin:0;">Потребители не привязаны к существующим решениям. Нет болезненного «разрыва» при переходе на AkademHub.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="color:var(--accent5);margin-bottom:16px;">Слабости рынка (Market Weaknesses)</h3>
+      <div class="flex-col" style="gap:10px;">
+        <div class="card">
+          <span class="tag tag-red" style="margin-bottom:8px;">Слабость</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Низкая платёжная готовность</div>
+          <p style="font-size:12px;margin:0;">Академическая аудитория традиционно ожидает бесплатных сервисов. Монетизация через B2B-сегмент, а не прямые платежи пользователей.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-red" style="margin-bottom:8px;">Слабость</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Инерционность ВУЗов</div>
+          <p style="font-size:12px;margin:0;">Бюрократические процессы замедляют принятие решений о партнёрстве. Цикл сделки с университетом — 3–12 месяцев.</p>
+        </div>
+        <div class="card">
+          <span class="tag tag-red" style="margin-bottom:8px;">Слабость</span>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Проблема «холодного старта»</div>
+          <p style="font-size:12px;margin:0;">Без конференций нет пользователей, без пользователей — нет конференций. Двусторонний рынок требует параллельного запуска обеих сторон.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 24 — ВОЗМОЖНОСТИ И УГРОЗЫ ===== -->
+<div class="slide" id="slide-24">
+  <div class="slide-number">24 / 40</div>
+  <div class="eyebrow">Возможности и угрозы</div>
+  <h2>Стратегический <span class="gradient-text">горизонт</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">🟢 Ключевые возможности</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">КРАТКОСРОЧНО</div>
+          <div class="timeline-title">Государственные гранты на цифровизацию науки</div>
+          <div class="timeline-desc">Программы Министерства инновационного развития, IT Park Uzbekistan и международных фондов</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">СРЕДНЕСРОЧНО</div>
+          <div class="timeline-title">Экспансия в страны СНГ</div>
+          <div class="timeline-desc">Казахстан, Кыргызстан, Таджикистан — аналогичная проблематика и отсутствие конкурентов</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">ДОЛГОСРОЧНО</div>
+          <div class="timeline-title">Стать региональным стандартом академических коммуникаций</div>
+          <div class="timeline-desc">Когда рынок созревает — лидер рынка становится де-факто стандартом для всех участников</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="color:var(--accent5);margin-bottom:20px;">🔴 Ключевые угрозы</h3>
+      <div class="timeline">
+        <div class="timeline-item" style="--dot-color:var(--accent5);">
+          <div class="timeline-year" style="color:var(--accent5);">ВЫСОКИЙ РИСК</div>
+          <div class="timeline-title">Вход международных игроков</div>
+          <div class="timeline-desc">ResearchGate или Elsevier могут запустить региональную версию — необходимо успеть сформировать лояльную базу до этого момента</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="color:var(--accent4);">СРЕДНИЙ РИСК</div>
+          <div class="timeline-title">Регуляторные изменения</div>
+          <div class="timeline-desc">Изменения в законодательстве о данных или образовательной деятельности могут потребовать адаптации модели</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="color:var(--accent3);">НИЗКИЙ РИСК</div>
+          <div class="timeline-title">Технологическое отставание</div>
+          <div class="timeline-desc">Пока рынок незрелый, технологический разрыв менее критичен. Важнее скорость роста аудитории</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 25 — ПОЗИЦИОНИРОВАНИЕ ===== -->
+<div class="slide" id="slide-25">
+  <div class="slide-number">25 / 40</div>
+  <div class="eyebrow">Позиционирование проекта</div>
+  <h2>Место AkademHub <span class="gradient-text">в восприятии рынка</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <p>AkademHub позиционируется не как технологический продукт, а как инфраструктурный проект для развития науки — аналог того, чем является LinkedIn для профессиональной среды, но специально созданный для академического сообщества Центральной Азии.</p>
+
+      <div class="divider"></div>
+
+      <div class="flex-col" style="gap:12px;">
+        <div class="card card-accent-blue">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">По функции</div>
+          <p style="font-size:13px;margin:0;">«Академический коммуникационный хаб» — не просто каталог событий, а живое медиапространство взаимодействия</p>
+        </div>
+        <div class="card card-accent-green">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent3);margin-bottom:8px;">По географии</div>
+          <p style="font-size:13px;margin:0;">Региональный фокус как конкурентное преимущество: глубокое знание рынка vs. глобальные игроки без локального контекста</p>
+        </div>
+        <div class="card card-accent-purple">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;">По ценностям</div>
+          <p style="font-size:13px;margin:0;">«Наука должна менять жизни» — платформа с миссией, а не просто сервис. Идеологическое позиционирование создаёт долгосрочную лояльность</p>
+        </div>
+        <div class="card card-accent-amber">
+          <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent4);margin-bottom:8px;">По аудитории</div>
+          <p style="font-size:13px;margin:0;">Молодые исследователи и студенты как первичная аудитория — они будут «взрослеть» вместе с платформой и оставаться лояльными долгосрочно</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Positioning Map SVG -->
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:20px;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">Карта позиционирования</div>
+        <svg viewBox="0 0 320 280" style="width:100%;max-width:320px;">
+          <!-- Axes -->
+          <line x1="20" y1="140" x2="300" y2="140" stroke="rgba(15,23,42,0.15)" stroke-width="1"/>
+          <line x1="160" y1="20" x2="160" y2="260" stroke="rgba(15,23,42,0.15)" stroke-width="1"/>
+          <!-- Axis labels -->
+          <text x="22" y="135" fill="#6b7280" font-size="9" font-family="system-ui">Локальный</text>
+          <text x="240" y="135" fill="#6b7280" font-size="9" font-family="system-ui">Глобальный</text>
+          <text x="162" y="28" fill="#6b7280" font-size="9" font-family="system-ui">Узко</text>
+          <text x="162" y="260" fill="#6b7280" font-size="9" font-family="system-ui">Широко</text>
+          <!-- Arrow markers -->
+          <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto">
+              <polygon points="0 0, 6 2, 0 4" fill="rgba(15,23,42,0.2)"/>
+            </marker>
+          </defs>
+          <!-- Competitors -->
+          <circle cx="240" cy="60" r="16" fill="rgba(167,139,250,0.2)" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+          <text x="225" y="55" fill="#7c3aed" font-size="8" font-family="system-ui">ResearchGate</text>
+          <circle cx="230" cy="80" r="12" fill="rgba(167,139,250,0.15)" stroke="rgba(167,139,250,0.3)" stroke-width="1"/>
+          <text x="215" y="98" fill="#7c3aed" font-size="8" font-family="system-ui">Academia.edu</text>
+          <circle cx="200" cy="130" r="10" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+          <text x="175" y="148" fill="#b45309" font-size="8" font-family="system-ui">Eventbrite</text>
+          <circle cx="70" cy="100" r="10" fill="rgba(244,63,94,0.15)" stroke="rgba(244,63,94,0.3)" stroke-width="1"/>
+          <text x="46" y="118" fill="#b91c1c" font-size="8" font-family="system-ui">Конф.рф</text>
+          <!-- AkademHub -->
+          <circle cx="95" cy="200" r="24" fill="rgba(37,99,235,0.15)" stroke="#2563eb" stroke-width="2"/>
+          <text x="63" y="235" fill="#2563eb" font-size="9" font-weight="bold" font-family="system-ui">AkademHub</text>
+          <!-- Glow -->
+          <circle cx="95" cy="200" r="32" fill="none" stroke="rgba(37,99,235,0.1)" stroke-width="1"/>
+        </svg>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">Оси: Локальный/Глобальный · Узкий/Широкий охват</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 26 — УТП ===== -->
+<div class="slide" id="slide-26">
+  <div class="slide-number">26 / 40</div>
+  <div class="eyebrow">Уникальное торговое предложение</div>
+  <h2>Почему <span class="gradient-text">именно AkademHub</span></h2>
+
+  <div class="highlight-box" style="margin-bottom:40px;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Unique Value Proposition</div>
+    <p style="font-size:22px;color:var(--text-primary);font-weight:600;line-height:1.5;margin:0;">
+      AkademHub — единственная платформа, объединяющая академическое сообщество Центральной Азии в одном цифровом пространстве: от поиска конференций до нетворкинга, рейтингов и связи с бизнесом.
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div style="text-align:center;padding:24px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:36px;margin-bottom:12px;">🎯</div>
+      <div style="font-weight:700;margin-bottom:8px;color:var(--accent);">Региональный фокус</div>
+      <p style="font-size:13px;">Глубокое понимание локального контекста: языки, культура, регуляторика. Глобальные игроки этого не дают.</p>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:36px;margin-bottom:12px;">🔗</div>
+      <div style="font-weight:700;margin-bottom:8px;color:var(--accent3);">Полный цикл</div>
+      <p style="font-size:13px;">От поиска конференции до нетворкинга, публикации результатов и поиска инвестора — всё в одном месте.</p>
+    </div>
+    <div style="text-align:center;padding:24px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+      <div style="font-size:36px;margin-bottom:12px;">🌱</div>
+      <div style="font-weight:700;margin-bottom:8px;color:var(--accent2);">Миссия, а не сервис</div>
+      <p style="font-size:13px;">Платформа с идеологией и социальной миссией формирует сообщество — не просто базу пользователей.</p>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:28px;">
+    <div class="card card-accent-blue">
+      <h3 style="font-size:14px;margin-bottom:12px;">Для исследователей</h3>
+      <p style="font-size:13px;margin:0;">«Найди конференцию, познакомься с коллегами и стань видимым для бизнеса — всё в одном месте на родном языке»</p>
+    </div>
+    <div class="card card-accent-green">
+      <h3 style="font-size:14px;margin-bottom:12px;">Для университетов</h3>
+      <p style="font-size:13px;margin:0;">«Опубликуй конференцию и привлеки лучших участников из всего региона, не вкладывая средства в маркетинг»</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 27 — АНАЛИЗ БРЕНДА ===== -->
+<div class="slide" id="slide-27">
+  <div class="slide-number">27 / 40</div>
+  <div class="eyebrow">Анализ бренда</div>
+  <h2>Идентичность <span class="gradient-text">AkademHub</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:20px;">Атрибуты бренда</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;font-size:14px;">Интеллект</span>
+            <span class="tag tag-blue">Core</span>
+          </div>
+          <p style="font-size:12px;margin-top:6px;margin-bottom:0;">Ассоциация с умом, аналитикой, экспертизой — основа доверия академической аудитории</p>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;font-size:14px;">Открытость</span>
+            <span class="tag tag-green">Core</span>
+          </div>
+          <p style="font-size:12px;margin-top:6px;margin-bottom:0;">Прозрачность данных, open-culture, демократичность доступа к знаниям</p>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;font-size:14px;">Современность</span>
+            <span class="tag tag-purple">Secondary</span>
+          </div>
+          <p style="font-size:12px;margin-top:6px;margin-bottom:0;">Цифровой, динамичный, технологичный образ — привлекает молодёжь</p>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;font-size:14px;">Надёжность</span>
+            <span class="tag tag-amber">Secondary</span>
+          </div>
+          <p style="font-size:12px;margin-top:6px;margin-bottom:0;">Академическая среда требует достоверности данных и серьёзности репутации</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Архетип бренда</h3>
+      <div class="highlight-box">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent3);margin-bottom:10px;">Мудрец + Соединитель</div>
+        <p style="font-size:14px;color:var(--text-primary);margin:0;line-height:1.7;">AkademHub несёт архетип <em>Мудреца</em> (экспертиза, знание, аналитика) в сочетании с архетипом <em>Соединителя</em> (связывает людей, создаёт сообщество, выстраивает мосты). Эта комбинация точно отражает двойную функцию платформы.</p>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="font-size:14px;color:var(--accent);margin-bottom:12px;">Tone of Voice</h3>
+        <div class="grid-2" style="gap:10px;">
+          <span class="tag tag-blue" style="display:block;text-align:center;padding:8px;">Профессиональный</span>
+          <span class="tag tag-green" style="display:block;text-align:center;padding:8px;">Вдохновляющий</span>
+          <span class="tag tag-purple" style="display:block;text-align:center;padding:8px;">Инклюзивный</span>
+          <span class="tag tag-amber" style="display:block;text-align:center;padding:8px;">Конкретный</span>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="font-size:14px;color:var(--accent3);margin-bottom:12px;">Визуальная идентичность</h3>
+        <div class="flex-col" style="gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:6px;background:linear-gradient(135deg,#2563eb,#7c3aed);flex-shrink:0;"></div>
+            <span style="font-size:12px;color:var(--text-secondary);">Синий-индиго — интеллект, доверие, академизм</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:6px;background:linear-gradient(135deg,#059669,#2563eb);flex-shrink:0;"></div>
+            <span style="font-size:12px;color:var(--text-secondary);">Зелёный акцент — рост, инновации, позитивный импульс</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 28 — КОММУНИКАЦИОННАЯ СТРАТЕГИЯ ===== -->
+<div class="slide" id="slide-28">
+  <div class="slide-number">28 / 40</div>
+  <div class="eyebrow">Коммуникационная стратегия</div>
+  <h2>Как AkademHub <span class="gradient-text">говорит с миром</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <p>Коммуникационная стратегия AkademHub строится на принципе <strong>«Образование через вовлечение»</strong> — платформа не навязывает себя, а создаёт ценность, которую аудитория сама стремится получить и распространить.</p>
+
+      <div class="divider"></div>
+
+      <h3 style="color:var(--accent);margin-bottom:16px;">Стратегические направления</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card card-accent-blue">
+          <div style="font-weight:600;font-size:14px;margin-bottom:6px;">1. Thought Leadership</div>
+          <p style="font-size:12px;margin:0;">Публикация аналитики о состоянии науки, рейтингов, трендов. AkademHub как экспертный голос академического сообщества.</p>
+        </div>
+        <div class="card card-accent-green">
+          <div style="font-weight:600;font-size:14px;margin-bottom:6px;">2. Community-Led Growth</div>
+          <p style="font-size:12px;margin:0;">Вовлечение лидеров мнений академической среды, создание послов бренда в каждом крупном ВУЗе страны.</p>
+        </div>
+        <div class="card card-accent-purple">
+          <div style="font-weight:600;font-size:14px;margin-bottom:6px;">3. Event-Driven Communications</div>
+          <p style="font-size:12px;margin:0;">Каждая публикуемая конференция — информационный повод. Платформа живёт в ритме академических событий.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">Коммуникационная матрица</h3>
+      <div style="overflow-x:auto;">
+        <table style="font-size:12px;">
+          <thead>
+            <tr>
+              <th>Аудитория</th>
+              <th>Ключевое сообщение</th>
+              <th>Канал</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Студенты</td>
+              <td>«Начни научный путь здесь»</td>
+              <td>Instagram, Telegram</td>
+            </tr>
+            <tr>
+              <td>Исследователи</td>
+              <td>«Будь виден. Найди партнёров»</td>
+              <td>LinkedIn, Email</td>
+            </tr>
+            <tr>
+              <td>Университеты</td>
+              <td>«Больше участников, меньше затрат»</td>
+              <td>Direct sales, Email</td>
+            </tr>
+            <tr>
+              <td>Бизнес</td>
+              <td>«R&D без лишних сложностей»</td>
+              <td>B2B pitch, Events</td>
+            </tr>
+            <tr>
+              <td>Государство</td>
+              <td>«Инфраструктура для науки страны»</td>
+              <td>Официальные каналы</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 29 — КОНТЕНТ-СТРАТЕГИЯ ===== -->
+<div class="slide" id="slide-29">
+  <div class="slide-number">29 / 40</div>
+  <div class="eyebrow">Контент-стратегия</div>
+  <h2>Контент как <span class="gradient-text">конкурентное преимущество</span></h2>
+
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">📰</div>
+      <h3>Образовательный контент</h3>
+      <p style="font-size:13px;">Гайды по подготовке статей для конференций, советы по нетворкингу, обзоры трендов науки. Формирует экспертизу бренда.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">Telegram · Email · Blog</div>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">👤</div>
+      <h3>Истории участников</h3>
+      <p style="font-size:13px;">Интервью с успешными исследователями, кейсы студентов, нашедших партнёров через платформу. Social proof.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">Instagram · LinkedIn · Reels</div>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">📊</div>
+      <h3>Аналитика и рейтинги</h3>
+      <p style="font-size:13px;">Ежеквартальные отчёты об активности в академической среде, рейтинги университетов, популярные темы конференций.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">LinkedIn · PR · Email</div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">🎬</div>
+      <h3>Видеоконтент</h3>
+      <p style="font-size:13px;">Короткие видео о конференциях, backstage мероприятий, интервью с организаторами. Максимальный охват молодёжи.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">YouTube · TikTok · Reels</div>
+    </div>
+    <div class="card">
+      <div class="icon-wrap icon-red">🔔</div>
+      <h3>Новости академического мира</h3>
+      <p style="font-size:13px;">Дайджесты новостей науки, гранты, стипендии, международные возможности. Платформа как информационный агрегатор.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">Telegram · Email</div>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🤖</div>
+      <h3>UGC и комьюнити-контент</h3>
+      <p style="font-size:13px;">Посты участников о пройденных конференциях, результатах исследований, отзывах. Пользовательский контент снижает затраты на production.</p>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);">Platform · Social</div>
+    </div>
+  </div>
+
+  <div class="card card-accent-blue">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Контент-ритм</div>
+        <p style="font-size:13px;margin:0;">Ежедневно: новости конференций · Еженедельно: экспертный материал · Ежемесячно: аналитический обзор · Ежеквартально: рейтинг</p>
+      </div>
+      <span class="tag tag-green" style="white-space:nowrap;">SEO-first подход</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 30 — ПЛАН ПРОДВИЖЕНИЯ ===== -->
+<div class="slide" id="slide-30">
+  <div class="slide-number">30 / 40</div>
+  <div class="eyebrow">План продвижения</div>
+  <h2>Go-to-Market <span class="gradient-text">стратегия</span></h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">Фаза 1 · 0–3 месяца</div>
+      <div class="timeline-title">Формирование базы и первый контент</div>
+      <div class="timeline-desc">Ручная работа с 20–30 ведущими ВУЗами Узбекистана. Прямые переговоры с организаторами конференций. Создание Telegram-канала и запуск первых 50 конференций. Цель: 500 зарегистрированных пользователей.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Фаза 2 · 3–6 месяцев</div>
+      <div class="timeline-title">Органический рост и сетевой эффект</div>
+      <div class="timeline-desc">SEO-оптимизация, запуск контент-машины. Программа академических амбассадоров (по 2–3 в каждом крупном ВУЗе). Партнёрство с IT Park Uzbekistan и Министерством инновационного развития. Цель: 5 000 пользователей.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Фаза 3 · 6–12 месяцев</div>
+      <div class="timeline-title">Выход на B2B-рынок</div>
+      <div class="timeline-desc">Запуск платных пакетов для университетов. Первые корпоративные партнёрства. Ежегодный мини-форум как флагманское событие. Выход в Казахстан. Цель: 20 000 пользователей, первая выручка.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Фаза 4 · 12–24 месяца</div>
+      <div class="timeline-title">Масштабирование и международный выход</div>
+      <div class="timeline-desc">Расширение на 3–5 стран СНГ. Запуск мобильного приложения. Первый полноценный Форум науки и инноваций. Запуск академических рейтингов. Привлечение раунда финансирования.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 31 — МОНЕТИЗАЦИЯ ===== -->
+<div class="slide" id="slide-31">
+  <div class="slide-number">31 / 40</div>
+  <div class="eyebrow">Монетизация</div>
+  <h2>Модели <span class="gradient-text">монетизации</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:20px;">Стримы доходов</h3>
+      <div class="flex-col" style="gap:14px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">B2B подписки (ВУЗы)</span>
+            <span class="tag tag-green">Основной</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Платный доступ для университетов: публикация неограниченного числа конференций, аналитика, приоритетное размещение</p>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:70%;background:linear-gradient(90deg,var(--accent3),var(--accent));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">Корпоративные пакеты</span>
+            <span class="tag tag-blue">Высокий LTV</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Доступ бизнеса к базе исследователей, размещение вакансий, спонсорство конференций</p>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:55%;background:linear-gradient(90deg,var(--accent),var(--accent2));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">Premium-аккаунты</span>
+            <span class="tag tag-purple">Масштаб</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Расширенные профили для исследователей, приоритет в рекомендациях, аналитика по профилю</p>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:35%;background:linear-gradient(90deg,var(--accent2),var(--accent5));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">Организация мероприятий</span>
+            <span class="tag tag-amber">Флагман</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Организационные услуги для конференций, форум науки и инноваций, спонсорские пакеты</p>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:50%;background:linear-gradient(90deg,var(--accent4),var(--accent5));"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">Данные и аналитика</span>
+            <span class="tag tag-blue">Перспектива</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Агрегированные данные о трендах академической активности для государства, фондов, медиа</p>
+          <div class="progress-bar"><div class="progress-fill" style="--target-width:25%;background:linear-gradient(90deg,var(--accent),var(--accent3));"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Ценовая архитектура (прогноз)</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card" style="border-color:rgba(37,99,235,0.12);">
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Free (Базовый)</div>
+          <div style="font-size:24px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">$0</div>
+          <ul class="feature-list" style="gap:6px;">
+            <li style="font-size:12px;">Просмотр каталога конференций</li>
+            <li style="font-size:12px;">Базовый профиль исследователя</li>
+            <li style="font-size:12px;">Регистрация на 3 конференции/мес</li>
+          </ul>
+        </div>
+        <div class="card card-accent-blue">
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Pro (Исследователь)</div>
+          <div style="font-size:24px;font-weight:800;color:var(--accent);margin-bottom:8px;">$9/мес</div>
+          <ul class="feature-list" style="gap:6px;">
+            <li style="font-size:12px;">Расширенный профиль + портфолио</li>
+            <li style="font-size:12px;">Нетворкинг и прямые сообщения</li>
+            <li style="font-size:12px;">Аналитика просмотров профиля</li>
+          </ul>
+        </div>
+        <div class="card card-accent-green">
+          <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--accent3);margin-bottom:8px;">Institutional (ВУЗ)</div>
+          <div style="font-size:24px;font-weight:800;color:var(--accent3);margin-bottom:8px;">от $199/год</div>
+          <ul class="feature-list" style="gap:6px;">
+            <li style="font-size:12px;">Неограниченное число конференций</li>
+            <li style="font-size:12px;">Страница организации, аналитика</li>
+            <li style="font-size:12px;">Приоритет в каталоге</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 32 — СОЦИАЛЬНЫЙ ЭФФЕКТ ===== -->
+<div class="slide" id="slide-32">
+  <div class="slide-number">32 / 40</div>
+  <div class="eyebrow">Социальный эффект</div>
+  <h2>Влияние на <span class="gradient-text">общество</span></h2>
+
+  <div class="grid-3">
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">🌱</div>
+      <h3>Культура знаний</h3>
+      <p style="font-size:13px;">Популяризация научной деятельности среди молодёжи. AkademHub делает науку привлекательной, современной и достижимой карьерой.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🤝</div>
+      <h3>Социальный капитал</h3>
+      <p style="font-size:13px;">Создание новых профессиональных связей между исследователями разных регионов и дисциплин, ранее изолированными.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">🌍</div>
+      <h3>Международная интеграция</h3>
+      <p style="font-size:13px;">Снижение изоляции регионального академического сообщества. Создание точек входа для глобальных коллабораций.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="icon-wrap icon-amber">⚖️</div>
+      <h3>Равный доступ</h3>
+      <p style="font-size:13px;">Студент из небольшого университета региона получает те же возможности для участия в конференциях, что и столичный исследователь.</p>
+    </div>
+    <div class="card">
+      <div class="icon-wrap icon-red">🔬</div>
+      <h3>Прикладная наука</h3>
+      <p style="font-size:13px;">Сближение науки и реальных социальных проблем через механизм Science-Business Match. Рост практической значимости исследований.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">📈</div>
+      <h3>Человеческий капитал</h3>
+      <p style="font-size:13px;">Инвестиция в исследовательские компетенции молодёжи — долгосрочный рост человеческого капитала страны и конкурентоспособности экономики.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 33 — ЭКОНОМИЧЕСКИЙ ЭФФЕКТ ===== -->
+<div class="slide" id="slide-33">
+  <div class="slide-number">33 / 40</div>
+  <div class="eyebrow">Экономический эффект</div>
+  <h2>Измеримое <span class="gradient-text">влияние на экономику</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:20px;">Прямой экономический эффект</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card card-accent-blue">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--accent);margin-bottom:8px;">Снижение транзакционных издержек</div>
+          <p style="font-size:13px;margin:0;">Организаторы конференций тратят в среднем 30–40% бюджета на маркетинг. Платформа снижает эти затраты на 60–70% через агрегацию аудитории.</p>
+        </div>
+        <div class="card card-accent-green">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--accent3);margin-bottom:8px;">Ускорение инноваций</div>
+          <p style="font-size:13px;margin:0;">Faster science-to-market: механизм Science-Business Match сокращает путь от исследования до коммерциализации с 5–7 лет до 2–3 лет.</p>
+        </div>
+        <div class="card card-accent-purple">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--accent2);margin-bottom:8px;">Привлечение инвестиций</div>
+          <p style="font-size:13px;margin:0;">Прозрачная среда для инвесторов повышает deal flow в академические проекты. Каждая успешная коллаборация через платформу создаёт мультипликативный эффект.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Косвенный экономический эффект</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;">Развитие инновационной экономики</div>
+          <p style="font-size:13px;margin:0;">Создание экосистемы для стартапов на базе академических разработок. Рост числа spin-off компаний из ВУЗов.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;">Конкурентоспособность страны</div>
+          <p style="font-size:13px;margin:0;">Рост академических рейтингов Узбекистана в международных индексах (Scimago, QS) повышает привлекательность страны для зарубежных партнёров.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;letter-spacing:1px;color:var(--text-muted);margin-bottom:8px;">Создание рабочих мест</div>
+          <p style="font-size:13px;margin:0;">Платформа напрямую создаёт рабочие места в IT, маркетинге и организации мероприятий. Косвенно стимулирует занятость в академическом секторе.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 34 — ВЛИЯНИЕ НА НАУЧНУЮ СРЕДУ ===== -->
+<div class="slide" id="slide-34">
+  <div class="slide-number">34 / 40</div>
+  <div class="eyebrow">Влияние на научную среду</div>
+  <h2>Трансформация <span class="gradient-text">академической культуры</span></h2>
+
+  <div class="big-quote">
+    «AkademHub меняет не только то, как учёные находят конференции — он меняет то, как научное сообщество строит отношения, доверие и репутацию.»
+  </div>
+
+  <div class="grid-2" style="margin-top:28px;">
+    <div>
+      <h3 style="color:var(--accent);margin-bottom:16px;">До AkademHub</h3>
+      <ul class="feature-list">
+        <li>Информация о конференциях разрознена, поиск занимает дни</li>
+        <li>Нетворкинг только на самих мероприятиях — случайный и ограниченный</li>
+        <li>Репутация формируется только внутри узкого дисциплинарного круга</li>
+        <li>Международное сотрудничество — привилегия именитых учёных</li>
+        <li>Отсутствует прозрачность в оценке качества конференций</li>
+        <li>Студенты не имеют видимости для профессионального сообщества</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:16px;">После AkademHub</h3>
+      <ul class="feature-list">
+        <li>Единый центр: все конференции — в одном месте, мгновенно</li>
+        <li>Постоянный нетворкинг через платформу, независимо от мероприятий</li>
+        <li>Публичный академический профиль — репутация, видимая всем</li>
+        <li>Молодой исследователь получает доступ к международным партнёрам</li>
+        <li>Рейтинги и отзывы создают культуру качества конференций</li>
+        <li>Студенты участвуют в академической жизни с первого курса</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 35 — ВЛИЯНИЕ НА МОЛОДЁЖЬ ===== -->
+<div class="slide" id="slide-35">
+  <div class="slide-number">35 / 40</div>
+  <div class="eyebrow">Влияние на молодёжь</div>
+  <h2>Новое поколение <span class="gradient-text">исследователей</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <p>Молодёжь — самый стратегически важный сегмент AkademHub. Платформа создаётся с учётом того, что именно сегодняшние студенты будут определять науку следующего десятилетия.</p>
+
+      <div class="divider"></div>
+
+      <div class="flex-col" style="gap:12px;">
+        <div class="card card-accent-blue">
+          <div class="icon-wrap icon-blue" style="width:40px;height:40px;font-size:18px;">🚪</div>
+          <h3 style="font-size:14px;">Снижение порога входа</h3>
+          <p style="font-size:12px;margin:0;">Студент первого курса может найти конференцию, подходящую для начинающих, и сделать первый профессиональный шаг.</p>
+        </div>
+        <div class="card card-accent-green">
+          <div class="icon-wrap icon-green" style="width:40px;height:40px;font-size:18px;">🌐</div>
+          <h3 style="font-size:14px;">Глобальный кругозор</h3>
+          <p style="font-size:12px;margin:0;">Молодые исследователи видят конференции из других стран, получают международные приглашения, мыслят глобально.</p>
+        </div>
+        <div class="card card-accent-purple">
+          <div class="icon-wrap icon-purple" style="width:40px;height:40px;font-size:18px;">🏆</div>
+          <h3 style="font-size:14px;">Признание заслуг</h3>
+          <p style="font-size:12px;margin:0;">Академический профиль фиксирует каждое достижение. Молодые учёные получают публичное признание, мотивирующее к дальнейшей работе.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(37,99,235,0.06),rgba(124,58,237,0.06));border-color:rgba(37,99,235,0.15);">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Ключевое воздействие на молодёжь</div>
+        <div class="grid-2" style="gap:16px;">
+          <div style="text-align:center;">
+            <div style="font-size:32px;font-weight:800;color:var(--accent);">↑3x</div>
+            <div style="font-size:12px;color:var(--text-muted);">рост участия в конференциях</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;font-weight:800;color:var(--accent3);">↓60%</div>
+            <div style="font-size:12px;color:var(--text-muted);">снижение времени поиска конференции</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;font-weight:800;color:var(--accent2);">+5</div>
+            <div style="font-size:12px;color:var(--text-muted);">новых контактов за конференцию</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:32px;font-weight:800;color:var(--accent4);">2x</div>
+            <div style="font-size:12px;color:var(--text-muted);">рост публикационной активности</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:12px;">*прогнозные значения на основе аналитики смежных платформ</div>
+      </div>
+
+      <ul class="feature-list">
+        <li>Менторинг: молодые исследователи находят старших коллег в своей области</li>
+        <li>Стипендии и гранты: агрегация возможностей финансирования</li>
+        <li>Карьерный трек: от первой конференции до публичной репутации</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 36 — ВЛИЯНИЕ НА ИННОВАЦИОННУЮ ЭКОСИСТЕМУ ===== -->
+<div class="slide" id="slide-36">
+  <div class="slide-number">36 / 40</div>
+  <div class="eyebrow">Инновационная экосистема</div>
+  <h2>AkademHub как <span class="gradient-text">инновационная инфраструктура</span></h2>
+
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="card card-accent-blue">
+      <div class="icon-wrap icon-blue">🔬 + 💡</div>
+      <h3>Science → Innovation</h3>
+      <p style="font-size:13px;">Платформа создаёт прямой канал между академическими исследованиями и инновационными проектами. Учёные становятся предпринимателями быстрее.</p>
+    </div>
+    <div class="card card-accent-green">
+      <div class="icon-wrap icon-green">💡 + 💰</div>
+      <h3>Innovation → Investment</h3>
+      <p style="font-size:13px;">Инновационные проекты, рождённые на платформе, получают прямой доступ к инвестиционному сообществу через механизм Science-Business Match.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <div class="icon-wrap icon-purple">💰 + 🏛️</div>
+      <h3>Investment → Policy</h3>
+      <p style="font-size:13px;">Успешные инновации создают прецеденты для государственной политики. AkademHub становится площадкой для трансфера лучших практик в регуляторику.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <h3 style="margin-bottom:16px;font-size:16px;">Место AkademHub в инновационной экосистеме Узбекистана</h3>
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <ul class="feature-list">
+          <li>Связь с IT Park Uzbekistan — крупнейшим технологическим хабом страны</li>
+          <li>Интеграция с программами Инновационного центра Узбекистана</li>
+          <li>Партнёрство с акселераторами для вывода академических стартапов</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="feature-list">
+          <li>Участие в международных инновационных программах (UNDP, World Bank)</li>
+          <li>Связь с глобальными акселераторами Y Combinator, Plug&Play через alumni</li>
+          <li>Платформа для привлечения иностранных R&D-инвестиций</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 37 — ПЕРСПЕКТИВЫ 5 ЛЕТ ===== -->
+<div class="slide" id="slide-37">
+  <div class="slide-number">37 / 40</div>
+  <div class="eyebrow">Перспективы развития</div>
+  <h2>AkademHub <span class="gradient-text">через 5 лет</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;margin-bottom:28px;">
+    <div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2026 — СЕЙЧАС</div>
+          <div class="timeline-title">MVP: каталог конференций</div>
+          <div class="timeline-desc">Узбекистан. Каталог, регистрация, базовые профили. Первые 5 000 пользователей.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2027</div>
+          <div class="timeline-title">Платформа: нетворкинг + рейтинги</div>
+          <div class="timeline-desc">Профили исследователей, система рейтингов, первые B2B-клиенты. 50 000 пользователей.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2028</div>
+          <div class="timeline-title">Региональный хаб: СНГ-экспансия</div>
+          <div class="timeline-desc">5 стран, мобильное приложение, Science-Business Match. 200 000 пользователей.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2029–2030</div>
+          <div class="timeline-title">Стандарт региональной академической коммуникации</div>
+          <div class="timeline-desc">500 000+ пользователей, ежегодный Форум, международные партнёрства, серия A.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent3);margin-bottom:20px;">Целевые KPI на 5 лет</h3>
+      <div class="flex-col" style="gap:12px;">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Зарегистрированных пользователей</span>
+            <span style="font-size:18px;font-weight:800;color:var(--accent);">500 000+</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Университетов-партнёров</span>
+            <span style="font-size:18px;font-weight:800;color:var(--accent3);">500+</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Конференций в каталоге</span>
+            <span style="font-size:18px;font-weight:800;color:var(--accent2);">5 000+</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Стран присутствия</span>
+            <span style="font-size:18px;font-weight:800;color:var(--accent4);">10+</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Годовая выручка (прогноз)</span>
+            <span style="font-size:18px;font-weight:800;color:var(--accent5);">$2M+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 38 — РИСКИ ===== -->
+<div class="slide" id="slide-38">
+  <div class="slide-number">38 / 40</div>
+  <div class="eyebrow">Риски проекта</div>
+  <h2>Карта <span class="gradient-text">рисков</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;">
+    <div>
+      <h3 style="color:var(--accent5);margin-bottom:16px;">Критические риски</h3>
+
+      <div class="risk-item">
+        <div class="risk-badge risk-high">HIGH</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Проблема холодного старта</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Без конференций нет пользователей, без пользователей — нет организаторов. Критический барьер двустороннего рынка.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-high">HIGH</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Конкурент с большими ресурсами</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Крупный международный игрок может запустить региональную версию и перехватить рынок за счёт маркетингового бюджета.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Консерватизм академической среды</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Длительный цикл принятия решений в ВУЗах, бюрократические барьеры, сопротивление цифровизации.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Монетизационный разрыв</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Академическая аудитория ожидает бесплатных сервисов. Переход к платной модели может вызвать отток.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-low">LOW</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Технические сбои</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Перегрузка во время пиковых событий (публикация рейтингов, крупные форумы), проблемы масштабируемости.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color:var(--accent4);margin-bottom:16px;">Операционные риски</h3>
+
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Качество данных</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Некачественные или устаревшие данные о конференциях подрывают доверие к платформе. Необходима система верификации.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Регуляторные изменения</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Изменения в законодательстве об образовании или персональных данных могут потребовать существенной адаптации.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-low">LOW</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Репутационный риск</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Публикация сомнительных конференций может подорвать доверие академического сообщества. Требует жёсткой модерации.</p>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-low">LOW</div>
+        <div>
+          <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Удержание команды</div>
+          <p style="font-size:12px;margin:0;color:var(--text-secondary);">Конкуренция за IT-таланты на растущем рынке. Критичность потери ключевых специалистов на ранней стадии.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 39 — МИНИМИЗАЦИЯ РИСКОВ ===== -->
+<div class="slide" id="slide-39">
+  <div class="slide-number">39 / 40</div>
+  <div class="eyebrow">Пути минимизации рисков</div>
+  <h2>Стратегия <span class="gradient-text">управления рисками</span></h2>
+
+  <div class="grid-2">
+    <div class="card card-accent-green">
+      <span class="tag tag-red" style="margin-bottom:12px;">Риск: Холодный старт</span>
+      <h3 style="font-size:15px;">Стратегия: «Ручной запуск»</h3>
+      <p style="font-size:13px;">До автоматизации — прямые переговоры с 20–30 ВУЗами и организаторами. Гарантированное наполнение каталога первыми конференциями. Принцип «do things that don't scale» (Y Combinator).</p>
+    </div>
+    <div class="card card-accent-blue">
+      <span class="tag tag-red" style="margin-bottom:12px;">Риск: Крупный конкурент</span>
+      <h3 style="font-size:15px;">Стратегия: «Локальный ров»</h3>
+      <p style="font-size:13px;">Выстраивание глубокой лояльности через культуру и сообщество. Международный игрок сможет скопировать функционал, но не местный контекст, язык и доверие.</p>
+    </div>
+    <div class="card card-accent-purple">
+      <span class="tag tag-amber" style="margin-bottom:12px;">Риск: Консерватизм ВУЗов</span>
+      <h3 style="font-size:15px;">Стратегия: «Чемпионы внутри»</h3>
+      <p style="font-size:13px;">Программа академических амбассадоров из числа лояльных молодых преподавателей и аспирантов. Продажа через внутренних чемпионов, а не через ректоры.</p>
+    </div>
+    <div class="card card-accent-amber">
+      <span class="tag tag-amber" style="margin-bottom:12px;">Риск: Монетизационный разрыв</span>
+      <h3 style="font-size:15px;">Стратегия: «Freemium + B2B»</h3>
+      <p style="font-size:13px;">Конечные пользователи (студенты, исследователи) всегда имеют бесплатный доступ. Монетизация — через организации, а не индивидуальных пользователей.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-amber" style="margin-bottom:12px;">Риск: Качество данных</span>
+      <h3 style="font-size:15px;">Стратегия: «Верификация + Репутация»</h3>
+      <p style="font-size:13px;">Система верификации организаторов конференций. Рейтинги и отзывы участников. Ручная модерация на старте, автоматизированная — после масштабирования.</p>
+    </div>
+    <div class="card card-accent-blue">
+      <span class="tag tag-amber" style="margin-bottom:12px;">Риск: Регуляторный</span>
+      <h3 style="font-size:15px;">Стратегия: «Compliance First»</h3>
+      <p style="font-size:13px;">Юридическое сопровождение с момента запуска. Проактивное взаимодействие с Министерством инновационного развития. Статус партнёра государственных программ.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 40 — ВЫВОДЫ ===== -->
+<div class="slide" id="slide-40">
+  <div class="glow-orb" style="width:600px;height:400px;background:rgba(37,99,235,0.04);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  <div class="slide-number">40 / 40</div>
+  <div class="eyebrow">Итоговые выводы</div>
+  <h2>AkademHub — <span class="gradient-text">инфраструктура для будущего науки</span></h2>
+
+  <div class="grid-2" style="align-items:start;gap:40px;margin-bottom:40px;">
+    <div>
+      <div class="highlight-box" style="margin-bottom:24px;">
+        <p style="font-size:16px;color:var(--text-primary);line-height:1.7;margin:0;">
+          AkademHub — это не просто стартап. Это ответ на системный вызов: разрыв между наукой, бизнесом и обществом в одном из самых динамично развивающихся регионов мира.
+        </p>
+      </div>
+
+      <ul class="feature-list">
+        <li>Рынок готов: высокий запрос на digital-инструменты академической коммуникации при отсутствии конкурентов</li>
+        <li>Время правильное: государственная повестка цифровизации совпадает с миссией платформы</li>
+        <li>Первопроходец получает стратегическое преимущество: сетевой эффект и лояльность сообщества</li>
+        <li>Модель масштабируема: от Узбекистана — к СНГ — к Центральной Азии — к глобальному рынку</li>
+        <li>Социальный импакт усиливает коммерческий: миссия создаёт долгосрочную лояльность</li>
+      </ul>
+    </div>
+
+    <div class="flex-col" style="gap:16px;">
+      <div style="text-align:center;padding:24px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Итоговая оценка проекта</div>
+        <div class="grid-2" style="gap:12px;">
+          <div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent);">HIGH</div>
+            <div style="font-size:11px;color:var(--text-muted);">Потенциал рынка</div>
+          </div>
+          <div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent3);">HIGH</div>
+            <div style="font-size:11px;color:var(--text-muted);">Социальный импакт</div>
+          </div>
+          <div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent2);">MED</div>
+            <div style="font-size:11px;color:var(--text-muted);">Текущая зрелость</div>
+          </div>
+          <div>
+            <div style="font-size:28px;font-weight:800;color:var(--accent4);">HIGH</div>
+            <div style="font-size:11px;color:var(--text-muted);">Масштабируемость</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-accent-blue">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Рекомендации</div>
+        <ul class="feature-list" style="gap:8px;">
+          <li style="font-size:12px;">Приоритет 1: наполнить каталог 100+ конференциями в течение 30 дней</li>
+          <li style="font-size:12px;">Приоритет 2: запустить академическую амбассадорскую программу</li>
+          <li style="font-size:12px;">Приоритет 3: оформить партнёрство с 3–5 ведущими ВУЗами страны</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:40px;background:linear-gradient(135deg,rgba(37,99,235,0.06),rgba(124,58,237,0.06));border:1px solid rgba(37,99,235,0.15);border-radius:20px;">
+    <div style="font-size:36px;margin-bottom:16px;">🚀</div>
+    <p style="font-size:20px;color:var(--text-primary);font-weight:600;margin-bottom:12px;line-height:1.5;">
+      AkademHub — это инфраструктура нового поколения<br>для науки, инноваций и академических коммуникаций.
+    </p>
+    <p style="font-size:14px;color:var(--text-secondary);margin:0;">Платформа, которую Центральная Азия строила не одно десятилетие — теперь существует.</p>
+    <div style="margin-top:20px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="https://akademhub.uz" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;text-decoration:none;padding:12px 28px;border-radius:100px;font-weight:700;font-size:14px;">🌐 akademhub.uz</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:16px;">
+    <span style="font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">AkademHub</span>
+  </div>
+  <p>Маркетинговые исследования массовой коммуникации · 40 аналитических блоков · 2026</p>
+  <p style="margin-top:8px;">akademhub.uz · Узбекистан · Центральная Азия</p>
+</footer>
+
+<script>
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('scrollBar').style.width = progress + '%';
+  });
+
+  // Intersection Observer for slide animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.slide').forEach(slide => observer.observe(slide));
+
+  // First slide immediately visible
+  document.getElementById('slide-01').classList.add('visible');
+</script>
+</body>
+</html>
